@@ -7,62 +7,62 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		5BE78D332DF9A79700983CA2 /* PBXContainerItemProxy */ = {
+		5B7F52062E0E630B00FD0EAB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5BE78D1D2DF9A79500983CA2 /* Project object */;
+			containerPortal = 5B7F51F02E0E630A00FD0EAB /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5BE78D242DF9A79500983CA2;
-			remoteInfo = ratibPal;
+			remoteGlobalIDString = 5B7F51F72E0E630A00FD0EAB;
+			remoteInfo = RatibPalv2;
 		};
-		5BE78D3D2DF9A79700983CA2 /* PBXContainerItemProxy */ = {
+		5B7F52102E0E630B00FD0EAB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5BE78D1D2DF9A79500983CA2 /* Project object */;
+			containerPortal = 5B7F51F02E0E630A00FD0EAB /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5BE78D242DF9A79500983CA2;
-			remoteInfo = ratibPal;
+			remoteGlobalIDString = 5B7F51F72E0E630A00FD0EAB;
+			remoteInfo = RatibPalv2;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5BE78D252DF9A79500983CA2 /* ratibPal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ratibPal.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5BE78D322DF9A79700983CA2 /* ratibPalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ratibPalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5BE78D3C2DF9A79700983CA2 /* ratibPalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ratibPalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B7F51F82E0E630A00FD0EAB /* RatibPalv2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RatibPalv2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B7F52052E0E630B00FD0EAB /* RatibPalv2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RatibPalv2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B7F520F2E0E630B00FD0EAB /* RatibPalv2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RatibPalv2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5BE78D272DF9A79500983CA2 /* ratibPal */ = {
+		5B7F51FA2E0E630A00FD0EAB /* RatibPalv2 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ratibPal;
+			path = RatibPalv2;
 			sourceTree = "<group>";
 		};
-		5BE78D352DF9A79700983CA2 /* ratibPalTests */ = {
+		5B7F52082E0E630B00FD0EAB /* RatibPalv2Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ratibPalTests;
+			path = RatibPalv2Tests;
 			sourceTree = "<group>";
 		};
-		5BE78D3F2DF9A79700983CA2 /* ratibPalUITests */ = {
+		5B7F52122E0E630B00FD0EAB /* RatibPalv2UITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ratibPalUITests;
+			path = RatibPalv2UITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5BE78D222DF9A79500983CA2 /* Frameworks */ = {
+		5B7F51F52E0E630A00FD0EAB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5BE78D2F2DF9A79700983CA2 /* Frameworks */ = {
+		5B7F52022E0E630B00FD0EAB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5BE78D392DF9A79700983CA2 /* Frameworks */ = {
+		5B7F520C2E0E630B00FD0EAB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -72,22 +72,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5BE78D1C2DF9A79500983CA2 = {
+		5B7F51EF2E0E630A00FD0EAB = {
 			isa = PBXGroup;
 			children = (
-				5BE78D272DF9A79500983CA2 /* ratibPal */,
-				5BE78D352DF9A79700983CA2 /* ratibPalTests */,
-				5BE78D3F2DF9A79700983CA2 /* ratibPalUITests */,
-				5BE78D262DF9A79500983CA2 /* Products */,
+				5B7F51FA2E0E630A00FD0EAB /* RatibPalv2 */,
+				5B7F52082E0E630B00FD0EAB /* RatibPalv2Tests */,
+				5B7F52122E0E630B00FD0EAB /* RatibPalv2UITests */,
+				5B7F51F92E0E630A00FD0EAB /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		5BE78D262DF9A79500983CA2 /* Products */ = {
+		5B7F51F92E0E630A00FD0EAB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5BE78D252DF9A79500983CA2 /* ratibPal.app */,
-				5BE78D322DF9A79700983CA2 /* ratibPalTests.xctest */,
-				5BE78D3C2DF9A79700983CA2 /* ratibPalUITests.xctest */,
+				5B7F51F82E0E630A00FD0EAB /* RatibPalv2.app */,
+				5B7F52052E0E630B00FD0EAB /* RatibPalv2Tests.xctest */,
+				5B7F520F2E0E630B00FD0EAB /* RatibPalv2UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,134 +95,134 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5BE78D242DF9A79500983CA2 /* ratibPal */ = {
+		5B7F51F72E0E630A00FD0EAB /* RatibPalv2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5BE78D462DF9A79700983CA2 /* Build configuration list for PBXNativeTarget "ratibPal" */;
+			buildConfigurationList = 5B7F52192E0E630B00FD0EAB /* Build configuration list for PBXNativeTarget "RatibPalv2" */;
 			buildPhases = (
-				5BE78D212DF9A79500983CA2 /* Sources */,
-				5BE78D222DF9A79500983CA2 /* Frameworks */,
-				5BE78D232DF9A79500983CA2 /* Resources */,
+				5B7F51F42E0E630A00FD0EAB /* Sources */,
+				5B7F51F52E0E630A00FD0EAB /* Frameworks */,
+				5B7F51F62E0E630A00FD0EAB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5BE78D272DF9A79500983CA2 /* ratibPal */,
+				5B7F51FA2E0E630A00FD0EAB /* RatibPalv2 */,
 			);
-			name = ratibPal;
+			name = RatibPalv2;
 			packageProductDependencies = (
 			);
-			productName = ratibPal;
-			productReference = 5BE78D252DF9A79500983CA2 /* ratibPal.app */;
+			productName = RatibPalv2;
+			productReference = 5B7F51F82E0E630A00FD0EAB /* RatibPalv2.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5BE78D312DF9A79700983CA2 /* ratibPalTests */ = {
+		5B7F52042E0E630B00FD0EAB /* RatibPalv2Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5BE78D492DF9A79700983CA2 /* Build configuration list for PBXNativeTarget "ratibPalTests" */;
+			buildConfigurationList = 5B7F521C2E0E630B00FD0EAB /* Build configuration list for PBXNativeTarget "RatibPalv2Tests" */;
 			buildPhases = (
-				5BE78D2E2DF9A79700983CA2 /* Sources */,
-				5BE78D2F2DF9A79700983CA2 /* Frameworks */,
-				5BE78D302DF9A79700983CA2 /* Resources */,
+				5B7F52012E0E630B00FD0EAB /* Sources */,
+				5B7F52022E0E630B00FD0EAB /* Frameworks */,
+				5B7F52032E0E630B00FD0EAB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5BE78D342DF9A79700983CA2 /* PBXTargetDependency */,
+				5B7F52072E0E630B00FD0EAB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				5BE78D352DF9A79700983CA2 /* ratibPalTests */,
+				5B7F52082E0E630B00FD0EAB /* RatibPalv2Tests */,
 			);
-			name = ratibPalTests;
+			name = RatibPalv2Tests;
 			packageProductDependencies = (
 			);
-			productName = ratibPalTests;
-			productReference = 5BE78D322DF9A79700983CA2 /* ratibPalTests.xctest */;
+			productName = RatibPalv2Tests;
+			productReference = 5B7F52052E0E630B00FD0EAB /* RatibPalv2Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		5BE78D3B2DF9A79700983CA2 /* ratibPalUITests */ = {
+		5B7F520E2E0E630B00FD0EAB /* RatibPalv2UITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5BE78D4C2DF9A79700983CA2 /* Build configuration list for PBXNativeTarget "ratibPalUITests" */;
+			buildConfigurationList = 5B7F521F2E0E630B00FD0EAB /* Build configuration list for PBXNativeTarget "RatibPalv2UITests" */;
 			buildPhases = (
-				5BE78D382DF9A79700983CA2 /* Sources */,
-				5BE78D392DF9A79700983CA2 /* Frameworks */,
-				5BE78D3A2DF9A79700983CA2 /* Resources */,
+				5B7F520B2E0E630B00FD0EAB /* Sources */,
+				5B7F520C2E0E630B00FD0EAB /* Frameworks */,
+				5B7F520D2E0E630B00FD0EAB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5BE78D3E2DF9A79700983CA2 /* PBXTargetDependency */,
+				5B7F52112E0E630B00FD0EAB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				5BE78D3F2DF9A79700983CA2 /* ratibPalUITests */,
+				5B7F52122E0E630B00FD0EAB /* RatibPalv2UITests */,
 			);
-			name = ratibPalUITests;
+			name = RatibPalv2UITests;
 			packageProductDependencies = (
 			);
-			productName = ratibPalUITests;
-			productReference = 5BE78D3C2DF9A79700983CA2 /* ratibPalUITests.xctest */;
+			productName = RatibPalv2UITests;
+			productReference = 5B7F520F2E0E630B00FD0EAB /* RatibPalv2UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		5BE78D1D2DF9A79500983CA2 /* Project object */ = {
+		5B7F51F02E0E630A00FD0EAB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					5BE78D242DF9A79500983CA2 = {
+					5B7F51F72E0E630A00FD0EAB = {
 						CreatedOnToolsVersion = 16.4;
 					};
-					5BE78D312DF9A79700983CA2 = {
+					5B7F52042E0E630B00FD0EAB = {
 						CreatedOnToolsVersion = 16.4;
-						TestTargetID = 5BE78D242DF9A79500983CA2;
+						TestTargetID = 5B7F51F72E0E630A00FD0EAB;
 					};
-					5BE78D3B2DF9A79700983CA2 = {
+					5B7F520E2E0E630B00FD0EAB = {
 						CreatedOnToolsVersion = 16.4;
-						TestTargetID = 5BE78D242DF9A79500983CA2;
+						TestTargetID = 5B7F51F72E0E630A00FD0EAB;
 					};
 				};
 			};
-			buildConfigurationList = 5BE78D202DF9A79500983CA2 /* Build configuration list for PBXProject "ratibPal" */;
+			buildConfigurationList = 5B7F51F32E0E630A00FD0EAB /* Build configuration list for PBXProject "RatibPalv2" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 5BE78D1C2DF9A79500983CA2;
+			mainGroup = 5B7F51EF2E0E630A00FD0EAB;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 5BE78D262DF9A79500983CA2 /* Products */;
+			productRefGroup = 5B7F51F92E0E630A00FD0EAB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5BE78D242DF9A79500983CA2 /* ratibPal */,
-				5BE78D312DF9A79700983CA2 /* ratibPalTests */,
-				5BE78D3B2DF9A79700983CA2 /* ratibPalUITests */,
+				5B7F51F72E0E630A00FD0EAB /* RatibPalv2 */,
+				5B7F52042E0E630B00FD0EAB /* RatibPalv2Tests */,
+				5B7F520E2E0E630B00FD0EAB /* RatibPalv2UITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		5BE78D232DF9A79500983CA2 /* Resources */ = {
+		5B7F51F62E0E630A00FD0EAB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5BE78D302DF9A79700983CA2 /* Resources */ = {
+		5B7F52032E0E630B00FD0EAB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5BE78D3A2DF9A79700983CA2 /* Resources */ = {
+		5B7F520D2E0E630B00FD0EAB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -232,21 +232,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		5BE78D212DF9A79500983CA2 /* Sources */ = {
+		5B7F51F42E0E630A00FD0EAB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5BE78D2E2DF9A79700983CA2 /* Sources */ = {
+		5B7F52012E0E630B00FD0EAB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5BE78D382DF9A79700983CA2 /* Sources */ = {
+		5B7F520B2E0E630B00FD0EAB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,20 +256,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5BE78D342DF9A79700983CA2 /* PBXTargetDependency */ = {
+		5B7F52072E0E630B00FD0EAB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5BE78D242DF9A79500983CA2 /* ratibPal */;
-			targetProxy = 5BE78D332DF9A79700983CA2 /* PBXContainerItemProxy */;
+			target = 5B7F51F72E0E630A00FD0EAB /* RatibPalv2 */;
+			targetProxy = 5B7F52062E0E630B00FD0EAB /* PBXContainerItemProxy */;
 		};
-		5BE78D3E2DF9A79700983CA2 /* PBXTargetDependency */ = {
+		5B7F52112E0E630B00FD0EAB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5BE78D242DF9A79500983CA2 /* ratibPal */;
-			targetProxy = 5BE78D3D2DF9A79700983CA2 /* PBXContainerItemProxy */;
+			target = 5B7F51F72E0E630A00FD0EAB /* RatibPalv2 */;
+			targetProxy = 5B7F52102E0E630B00FD0EAB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		5BE78D442DF9A79700983CA2 /* Debug */ = {
+		5B7F52172E0E630B00FD0EAB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -304,6 +304,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = HX4555WCML;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -332,7 +333,7 @@
 			};
 			name = Debug;
 		};
-		5BE78D452DF9A79700983CA2 /* Release */ = {
+		5B7F52182E0E630B00FD0EAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -367,6 +368,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = HX4555WCML;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -388,7 +390,7 @@
 			};
 			name = Release;
 		};
-		5BE78D472DF9A79700983CA2 /* Debug */ = {
+		5B7F521A2E0E630B00FD0EAB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -408,7 +410,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Xcode.ratibPal;
+				PRODUCT_BUNDLE_IDENTIFIER = Xcode.RatibPalv2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -416,7 +418,7 @@
 			};
 			name = Debug;
 		};
-		5BE78D482DF9A79700983CA2 /* Release */ = {
+		5B7F521B2E0E630B00FD0EAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -436,7 +438,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Xcode.ratibPal;
+				PRODUCT_BUNDLE_IDENTIFIER = Xcode.RatibPalv2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -444,114 +446,118 @@
 			};
 			name = Release;
 		};
-		5BE78D4A2DF9A79700983CA2 /* Debug */ = {
+		5B7F521D2E0E630B00FD0EAB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HX4555WCML;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Xcode.ratibPalTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Xcode.RatibPalv2Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ratibPal.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ratibPal";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RatibPalv2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RatibPalv2";
 			};
 			name = Debug;
 		};
-		5BE78D4B2DF9A79700983CA2 /* Release */ = {
+		5B7F521E2E0E630B00FD0EAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HX4555WCML;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Xcode.ratibPalTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Xcode.RatibPalv2Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ratibPal.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ratibPal";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RatibPalv2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RatibPalv2";
 			};
 			name = Release;
 		};
-		5BE78D4D2DF9A79700983CA2 /* Debug */ = {
+		5B7F52202E0E630B00FD0EAB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HX4555WCML;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Xcode.ratibPalUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Xcode.RatibPalv2UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ratibPal;
+				TEST_TARGET_NAME = RatibPalv2;
 			};
 			name = Debug;
 		};
-		5BE78D4E2DF9A79700983CA2 /* Release */ = {
+		5B7F52212E0E630B00FD0EAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HX4555WCML;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Xcode.ratibPalUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Xcode.RatibPalv2UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ratibPal;
+				TEST_TARGET_NAME = RatibPalv2;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5BE78D202DF9A79500983CA2 /* Build configuration list for PBXProject "ratibPal" */ = {
+		5B7F51F32E0E630A00FD0EAB /* Build configuration list for PBXProject "RatibPalv2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5BE78D442DF9A79700983CA2 /* Debug */,
-				5BE78D452DF9A79700983CA2 /* Release */,
+				5B7F52172E0E630B00FD0EAB /* Debug */,
+				5B7F52182E0E630B00FD0EAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5BE78D462DF9A79700983CA2 /* Build configuration list for PBXNativeTarget "ratibPal" */ = {
+		5B7F52192E0E630B00FD0EAB /* Build configuration list for PBXNativeTarget "RatibPalv2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5BE78D472DF9A79700983CA2 /* Debug */,
-				5BE78D482DF9A79700983CA2 /* Release */,
+				5B7F521A2E0E630B00FD0EAB /* Debug */,
+				5B7F521B2E0E630B00FD0EAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5BE78D492DF9A79700983CA2 /* Build configuration list for PBXNativeTarget "ratibPalTests" */ = {
+		5B7F521C2E0E630B00FD0EAB /* Build configuration list for PBXNativeTarget "RatibPalv2Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5BE78D4A2DF9A79700983CA2 /* Debug */,
-				5BE78D4B2DF9A79700983CA2 /* Release */,
+				5B7F521D2E0E630B00FD0EAB /* Debug */,
+				5B7F521E2E0E630B00FD0EAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5BE78D4C2DF9A79700983CA2 /* Build configuration list for PBXNativeTarget "ratibPalUITests" */ = {
+		5B7F521F2E0E630B00FD0EAB /* Build configuration list for PBXNativeTarget "RatibPalv2UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5BE78D4D2DF9A79700983CA2 /* Debug */,
-				5BE78D4E2DF9A79700983CA2 /* Release */,
+				5B7F52202E0E630B00FD0EAB /* Debug */,
+				5B7F52212E0E630B00FD0EAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 5BE78D1D2DF9A79500983CA2 /* Project object */;
+	rootObject = 5B7F51F02E0E630A00FD0EAB /* Project object */;
 }
