@@ -1,0 +1,56 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore dist directory
+dist/
+
+# Ignore environment variable files
+.env
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+__pycache__
+
+# Optional: Add specific ignores for subfolders if needed
+HTML/temp/
+CSS/.cache/
+
+# Ignore executables for C/C++
+*.exe
+*.out
+*.obj
+*.o
+*.dll
+*.so
+*.dylib
+
+# Ignore other common temporary files and directories
+*.tmp
+*.temp
+*.swp
+.gradio
+
+aircraft_damage_dataset_v1
