@@ -10,8 +10,8 @@ import Foundation
 // MARK: - Tab Items
 enum TabItem: String, CaseIterable {
     case home = "Home"
-    case purchase = "Purcha"
-    case deliver = "Deliver"
+    case purchase = "Purchase"
+    case deliver = "Delivery"
     case billing = "Billing"
     case profile = "Profile"
     
@@ -19,7 +19,7 @@ enum TabItem: String, CaseIterable {
         switch self {
         case .home: return "house"
         case .purchase: return "cart"
-        case .deliver: return "truck"
+        case .deliver: return "box.truck"
         case .billing: return "doc.text"
         case .profile: return "person"
         }
@@ -52,4 +52,38 @@ struct PaymentSection {
 struct SupplierCategory {
     let title: String
     let items: [String]
+}
+
+// MARK: - Welcome Steps
+struct WelcomeStep {
+    let id: Int
+    let title: String
+    let subtitle: String
+    let isCompleted: Bool
+    let isActive: Bool
+}
+
+// MARK: - Line Management
+struct DeliveryLine {
+    let id: UUID = UUID()
+    let name: String
+    let isExpanded: Bool
+    let customers: [Customer]
+}
+
+struct Customer {
+    let id: UUID = UUID()
+    let name: String
+    let address: String
+}
+
+// MARK: - Filter Options
+enum FilterOption: String, CaseIterable {
+    case all = "All"
+    case active = "Active"
+    case inactive = "Inactive"
+    
+    var title: String {
+        return self.rawValue
+    }
 }
