@@ -21,6 +21,11 @@ struct MyDetailsView: View {
     @State private var newOrderNoticeDays = 1
     @State private var endOrderNoticeDays = 7
     
+    // Navigation states
+    @State private var showPersonalDetails = false
+    @State private var showBusinessDetails = false
+    @State private var showOfferingsList = false
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -30,7 +35,7 @@ struct MyDetailsView: View {
                         title: "Personal Details",
                         hasDisclosure: true
                     ) {
-                        // Navigate to personal details
+                        showPersonalDetails = true
                     }
                     
                     Divider()
@@ -58,7 +63,7 @@ struct MyDetailsView: View {
                         title: "Business Details",
                         hasDisclosure: true
                     ) {
-                        // Navigate to business details
+                        showBusinessDetails = true
                     }
                     
                     Divider()
@@ -80,7 +85,7 @@ struct MyDetailsView: View {
                         title: "Offerings list",
                         hasDisclosure: true
                     ) {
-                        // Navigate to offerings list
+                        showOfferingsList = true
                     }
                     
                     Divider()
@@ -240,6 +245,15 @@ struct MyDetailsView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("")
             .navigationBarHidden(true)
+            .sheet(isPresented: $showPersonalDetails) {
+                PersonalDetailsView()
+            }
+            .sheet(isPresented: $showBusinessDetails) {
+                BusinessDetailsView()
+            }
+            .sheet(isPresented: $showOfferingsList) {
+                OfferingsListView()
+            }
         }
     }
 }
