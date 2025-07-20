@@ -340,3 +340,6 @@ struct FABActionsView: View {
         }
     }
 }
+#Preview {
+    HomeView()
+}
