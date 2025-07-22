@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct LoadingView: View {
+    var onLoadingComplete: () -> Void
+    
     var body: some View {
         VStack {
             Spacer()
@@ -28,9 +30,17 @@ struct LoadingView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.white)
+        .onAppear {
+            // Navigate to login after 2.5 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                onLoadingComplete()
+            }
+        }
     }
 }
 
 #Preview {
-    LoadingView()
+    LoadingView {
+        print("Loading complete")
+    }
 }

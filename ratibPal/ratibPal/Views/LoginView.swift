@@ -9,7 +9,9 @@ import SwiftUI
 
 struct MobileLoginView: View {
     @State private var mobileNumber: String = ""
-    @State private var navigateToOTP = false
+    @State private var isLoading = false
+    
+    var onLoginComplete: () -> Void
 
     var body: some View {
         NavigationView {
@@ -43,11 +45,25 @@ struct MobileLoginView: View {
                 .padding(.horizontal, 30)
                 .padding(.bottom, 30)
                 
-                Button(action: {
-                    // Navigate to OTP page
-                    navigateToOTP = true
-                }) {
-                    Text("Agree and Continue")
+                // Continue button
+                    Button(action: {
+                        isLoading = true
+                        // Simulate API call
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            isLoading = false
+                            onLoginComplete()
+                        }
+                    }) {
+                        HStack {
+                            if isLoading {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                                    .scaleEffect(0.8)
+                                Text("Processing...")
+                            } else {
+                                Text("Agree and Continue")
+                            }
+                        }
                         .foregroundColor(.blue)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -55,17 +71,11 @@ struct MobileLoginView: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.blue, lineWidth: 1)
                         )
-                }
-                .padding(.horizontal, 30)
-                .padding(.bottom, 10)
-                
-                // Hidden NavigationLink
-                NavigationLink(
-                    destination: OTPVerificationView(),
-                    isActive: $navigateToOTP
-                ) {
-                    EmptyView()
-                }
+                    }
+                    .disabled(isLoading)
+                    .padding(.horizontal, 30)
+                    .padding(.bottom, 10)
+                    
 
                 Text("Terms and conditions")
                     .font(.footnote)
@@ -96,5 +106,7 @@ struct MobileLoginView: View {
     }
 }
 #Preview {
-    MobileLoginView()
+    MobileLoginView {
+        print("Login complete")
+    }
 }
