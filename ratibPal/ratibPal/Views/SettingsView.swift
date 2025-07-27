@@ -22,9 +22,9 @@ struct SettingsView: View {
     ]
     
     private let troubleshootingItems = [
-        "Connection Issues",
-        "Payment Problems", 
-        "Account Settings"
+        "Troubleshoot 1: Customers in Collection list excel but not shown in app?",
+        "Troubleshoot 2: Collection list excel shows some customers in Other line?",
+        "Troubleshoot 3: Billing screen total does not match the month total in History"
     ]
     
     var body: some View {
@@ -64,6 +64,7 @@ struct SettingsView: View {
                             HStack {
                                 Text(item)
                                     .foregroundColor(.primary)
+                                    .font(.body)
                                 
                                 Spacer()
                                 

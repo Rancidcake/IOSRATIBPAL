@@ -10,6 +10,11 @@ struct HomeView: View {
     @State private var selectedFilter: FilterOption = .all
     @State private var isDefaultLineExpanded = false
     
+    // SideMenu sheet states
+    @State private var showSettings = false
+    @State private var showPointOfSale = false
+    @State private var showFieldTeamTracker = false
+    
     @State private var groups: [String] = ["Default"]
     @State private var affiliates: [String] = ["Affiliate A", "Affiliate B"]
     
@@ -252,7 +257,12 @@ struct HomeView: View {
                     }
                 
                 HStack {
-                    SideMenuView(showSideMenu: $showSideMenu)
+                    SideMenuView(
+                        showSideMenu: $showSideMenu,
+                        showSettings: $showSettings,
+                        showPointOfSale: $showPointOfSale,
+                        showFieldTeamTracker: $showFieldTeamTracker
+                    )
                         .frame(width: 280)
                         .transition(.move(edge: .leading))
                     
@@ -282,6 +292,16 @@ struct HomeView: View {
                 showDeliveryLines: $showDeliveryLines,
                 showFAB: $showFAB
             )
+        }
+        // SideMenu sheets
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
+        .sheet(isPresented: $showPointOfSale) {
+            PointOfSaleView()
+        }
+        .sheet(isPresented: $showFieldTeamTracker) {
+            FieldTeamTrackerView()
         }
     }
 }

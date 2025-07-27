@@ -9,6 +9,11 @@ import SwiftUI
 struct MainTabView: View {
     @State private var selectedTab: TabItem = .home
     @State private var showSideMenu = false
+    
+    // SideMenu sheet states
+    @State private var showSettings = false
+    @State private var showPointOfSale = false
+    @State private var showFieldTeamTracker = false
 
     var body: some View {
         ZStack {
@@ -51,8 +56,23 @@ struct MainTabView: View {
             .accentColor(.blue)
 
             if showSideMenu {
-                SideMenuView(showSideMenu: $showSideMenu)
+                SideMenuView(
+                    showSideMenu: $showSideMenu,
+                    showSettings: $showSettings,
+                    showPointOfSale: $showPointOfSale,
+                    showFieldTeamTracker: $showFieldTeamTracker
+                )
             }
+        }
+        // SideMenu sheets
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
+        .sheet(isPresented: $showPointOfSale) {
+            PointOfSaleView()
+        }
+        .sheet(isPresented: $showFieldTeamTracker) {
+            FieldTeamTrackerView()
         }
     }
 }

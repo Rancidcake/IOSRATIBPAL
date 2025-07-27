@@ -13,6 +13,7 @@ struct BusinessDetailsView: View {
     @State private var businessProfile = ""
     @State private var customerContactNumber = ""
     @State private var agentSupplierContactNumber = ""
+    @State private var showManageLocations = false
     
     var body: some View {
         NavigationView {
@@ -161,7 +162,7 @@ struct BusinessDetailsView: View {
                         
                         // Manage Locations
                         Button(action: {
-                            // Navigate to manage locations
+                            showManageLocations = true
                         }) {
                             HStack {
                                 Text("Manage locations")
@@ -201,6 +202,9 @@ struct BusinessDetailsView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationBarHidden(true)
+            .sheet(isPresented: $showManageLocations) {
+                BusinessManageLocationsView()
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

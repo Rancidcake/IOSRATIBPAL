@@ -12,6 +12,7 @@ struct PersonalDetailsView: View {
     @State private var name = "Faheem"
     @State private var mobileNumber = "9356763651"
     @State private var emailID = ""
+    @State private var showManageLocations = false
     
     var body: some View {
         NavigationView {
@@ -116,7 +117,7 @@ struct PersonalDetailsView: View {
                         
                         // Manage Locations
                         Button(action: {
-                            // Navigate to manage locations
+                            showManageLocations = true
                         }) {
                             HStack {
                                 Text("Manage locations")
@@ -156,6 +157,9 @@ struct PersonalDetailsView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationBarHidden(true)
+            .sheet(isPresented: $showManageLocations) {
+                PersonalManageLocationsView()
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

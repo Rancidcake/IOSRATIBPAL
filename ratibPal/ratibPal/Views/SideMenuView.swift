@@ -9,7 +9,9 @@ import SwiftUI
 
 struct SideMenuView: View {
     @Binding var showSideMenu: Bool
-    @State private var showSettings = false
+    @Binding var showSettings: Bool
+    @Binding var showPointOfSale: Bool
+    @Binding var showFieldTeamTracker: Bool
     
     private let menuItems = [
         ("point.topleft.down.curvedto.point.bottomright.up", "Point of Sale"),
@@ -109,29 +111,29 @@ struct SideMenuView: View {
                 Spacer()
             }
         }
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
-        }
     }
     
     private func handleMenuAction(for item: String) {
+        print("DEBUG: Menu item tapped: \(item)")
         withAnimation {
             showSideMenu = false
         }
         
         switch item {
         case "Settings":
+            print("DEBUG: Opening Settings")
             showSettings = true
         case "Logout":
             // Handle logout
             print("Logout tapped")
         case "Point of Sale":
-            // Handle POS
-            print("Point of Sale tapped")
+            print("DEBUG: Opening Point of Sale")
+            showPointOfSale = true
         case "Field team tracker":
-            // Handle field team tracker
-            print("Field team tracker tapped")
+            print("DEBUG: Opening Field Team Tracker")
+            showFieldTeamTracker = true
         default:
+            print("DEBUG: Unknown menu item: \(item)")
             break
         }
     }
