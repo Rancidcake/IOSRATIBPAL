@@ -10,7 +10,9 @@ import SwiftUI
 struct OTPVerificationView: View {
     @State private var otpFields = ["", "", "", ""]
     @FocusState private var focusedIndex: Int?
-    @State private var navigateToHome = false
+    @State private var isLoading = false
+    
+    var onOTPComplete: () -> Void
 
     var body: some View {
         VStack(spacing: 20) {
@@ -72,26 +74,36 @@ struct OTPVerificationView: View {
             }
             .padding(.top, 20)
             
-            // NavigationLink to HomeView (hidden trigger)
-            NavigationLink(destination: HomeView(), isActive: $navigateToHome) {
-                EmptyView()
-            }
-            
             // Submit button
             Button(action: {
+                isLoading = true
                 print("OTP Submitted: \(otpFields.joined())")
-                navigateToHome = true // Navigate to HomeView
+                // Simulate API call
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    isLoading = false
+                    onOTPComplete()
+                }
             }) {
-                Text("Submit")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 1)
-                    )
-                    .foregroundColor(.blue)
+                HStack {
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                            .scaleEffect(0.8)
+                        Text("Verifying...")
+                    } else {
+                        Text("Submit")
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.blue, lineWidth: 1)
+                )
+                .foregroundColor(.blue)
             }
+            .disabled(isLoading)
             .padding(.top, 30)
             .padding(.horizontal, 40)
             
@@ -118,8 +130,8 @@ struct OTPVerificationView: View {
 // Preview
 struct OTPVerificationView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            OTPVerificationView()
+        OTPVerificationView {
+            print("OTP verification complete")
         }
     }
 }
