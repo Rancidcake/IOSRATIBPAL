@@ -212,40 +212,6 @@ struct PersonalManageLocationsView: View {
     }
 }
 
-// MARK: - Location Type Button
-struct LocationTypeButton: View {
-    let title: String
-    let isSelected: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 6) {
-                Circle()
-                    .fill(isSelected ? Color.green : Color.clear)
-                    .frame(width: 18, height: 18)
-                    .overlay(
-                        Circle()
-                            .stroke(isSelected ? Color.green : Color.gray, lineWidth: 2)
-                    )
-                    .overlay(
-                        Circle()
-                            .fill(Color.green)
-                            .frame(width: 6, height: 6)
-                            .opacity(isSelected ? 1 : 0)
-                    )
-                
-                Text(title)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-            }
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-}
-
 // MARK: - Location Pin Model
 struct LocationPin: Identifiable {
     let id: Int

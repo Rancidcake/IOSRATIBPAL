@@ -9,6 +9,7 @@ import SwiftUI
 struct MainTabView: View {
     @State private var selectedTab: TabItem = .home
     @State private var showSideMenu = false
+    @EnvironmentObject var authManager: AuthenticationManager
     
     // SideMenu sheet states
     @State private var showSettings = false
@@ -62,6 +63,7 @@ struct MainTabView: View {
                     showPointOfSale: $showPointOfSale,
                     showFieldTeamTracker: $showFieldTeamTracker
                 )
+                .environmentObject(authManager)
             }
         }
         // SideMenu sheets

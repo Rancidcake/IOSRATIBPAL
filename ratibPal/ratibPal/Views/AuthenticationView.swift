@@ -8,25 +8,17 @@ struct AuthenticationView: View {
             switch authManager.authenticationState {
             case .loading:
                 LoadingView {
-                    authManager.moveToLogin()
+                    authManager.moveToRegistration()
                 }
                 
-            case .login:
-                MobileLoginView(
-                    onLoginComplete: {
-                        authManager.moveToOTPVerification()
-                    },
-                )
-                
-            case .otpVerification:
-                OTPVerificationView(
-                    onOTPComplete: {
-                        authManager.completeAuthentication()
-                    },
-                )
+            case .registration:
+                RegistrationFlowView(registrationManager: authManager.registrationManager) {
+                    authManager.completeAuthentication()
+                }
                 
             case .authenticated:
                 MainTabView()
+                    .environmentObject(authManager)
             }
         }
         .animation(.easeInOut(duration: 0.5), value: authManager.authenticationState)

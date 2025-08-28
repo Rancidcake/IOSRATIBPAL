@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OTPVerificationView: View {
+struct LegacyOTPVerificationView: View {
     @State private var otpFields = ["", "", "", ""]
     @FocusState private var focusedIndex: Int?
     @State private var isLoading = false
@@ -128,9 +128,9 @@ struct OTPVerificationView: View {
 }
 
 // Preview
-struct OTPVerificationView_Previews: PreviewProvider {
+struct LegacyOTPVerificationView_Previews: PreviewProvider {
     static var previews: some View {
-        OTPVerificationView {
+        LegacyOTPVerificationView {
             print("OTP verification complete")
         }
     }

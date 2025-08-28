@@ -12,6 +12,8 @@ struct SideMenuView: View {
     @Binding var showSettings: Bool
     @Binding var showPointOfSale: Bool
     @Binding var showFieldTeamTracker: Bool
+    @EnvironmentObject var authManager: AuthenticationManager
+    @State private var showLogoutAlert = false
     
     private let menuItems = [
         ("point.topleft.down.curvedto.point.bottomright.up", "Point of Sale"),
@@ -111,6 +113,14 @@ struct SideMenuView: View {
                 Spacer()
             }
         }
+        .alert("Logout", isPresented: $showLogoutAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Logout", role: .destructive) {
+                authManager.logout()
+            }
+        } message: {
+            Text("Are you sure you want to logout? You will need to login again to access your account.")
+        }
     }
     
     private func handleMenuAction(for item: String) {
@@ -124,8 +134,7 @@ struct SideMenuView: View {
             print("DEBUG: Opening Settings")
             showSettings = true
         case "Logout":
-            // Handle logout
-            print("Logout tapped")
+            showLogoutAlert = true
         case "Point of Sale":
             print("DEBUG: Opening Point of Sale")
             showPointOfSale = true

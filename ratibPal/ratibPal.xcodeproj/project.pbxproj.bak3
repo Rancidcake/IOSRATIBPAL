@@ -29,22 +29,9 @@
 		5BE78D3C2DF9A79700983CA2 /* ratibPalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ratibPalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5B2DE7432E60DB2100D811B0 /* Exceptions for "ratibPal" folder in "ratibPal" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 5BE78D242DF9A79500983CA2 /* ratibPal */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5BE78D272DF9A79500983CA2 /* ratibPal */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				5B2DE7432E60DB2100D811B0 /* Exceptions for "ratibPal" folder in "ratibPal" target */,
-			);
 			path = ratibPal;
 			sourceTree = "<group>";
 		};
@@ -411,8 +398,6 @@
 				DEVELOPMENT_TEAM = HX4555WCML;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ratibPal/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -441,8 +426,6 @@
 				DEVELOPMENT_TEAM = HX4555WCML;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ratibPal/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

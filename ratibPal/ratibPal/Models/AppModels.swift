@@ -6,6 +6,138 @@
 //
 
 import Foundation
+import UIKit
+
+// MARK: - RatibPal API Models
+
+// MARK: - Registration Request Models
+struct LoginRequest: Codable {
+    let mobileNo: String    // 10-digit mobile number
+    let appType: String     // "omni"
+}
+
+struct OtpModel: Codable {
+    let mobileNo: String
+    let otp: String                    // 4-digit OTP
+    let deviceDetails: DeviceDetails
+}
+
+struct DeviceDetails: Codable {
+    let deviceId: String      // iOS: UIDevice.current.identifierForVendor
+    let deviceType: String    // "ios" to match Android format
+    let os: String           // iOS system name
+    let osVer: String        // iOS version
+    let appVer: String       // App version
+    let pushToken: String    // FCM/APNS token for notifications
+    let appType: String      // "omni"
+    
+    static var current: DeviceDetails {
+        return DeviceDetails(
+            deviceId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
+            deviceType: "ios",
+            os: UIDevice.current.systemName,
+            osVer: UIDevice.current.systemVersion,
+            appVer: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0",
+            pushToken: UserDefaults.standard.string(forKey: "pushToken") ?? "",
+            appType: "omni"
+        )
+    }
+}
+
+// MARK: - Response Models
+struct LoginResponse: Codable {
+    let message: String
+    let messageCode: String
+    // Inherits mobileNo and appType from LoginRequest
+}
+
+struct Profile: Codable {
+    let uid: String          // User ID
+    let mno: String?         // Mobile number
+    let nam: String?         // Full name
+    let eml: String?         // Email
+    let img: String?         // Profile image ID
+    let irl: String?         // Profile image URL
+    let pid: String?         // Photo ID image
+    let stk: String          // Security token (API key)
+    let plc: String?         // Preferred language code
+    let pns: Bool            // Notification preferences
+    let blk: Bool            // Blocked status
+    let off: Bool            // Offline status
+    
+    // Supplier details (if user is a supplier)
+    let sup: Supplier?
+    
+    // Locations
+    let lcs: [Location]?
+    
+    // Audit fields
+    let ca: Int64            // Created at
+    let cb: String?          // Created by
+    let ua: Int64            // Updated at
+    let ub: String?          // Updated by
+    let d: Bool              // Deleted flag
+}
+
+struct Supplier: Codable {
+    let uid: String
+    let bnm: String?         // Business name
+    let bpr: String?         // Business profile/description
+    let scl: Int             // Supply chain level
+    let dcn: String?         // Delivery contact number
+    let ucn: String?         // Upstream contact number
+    let sdc: String?         // Show delivery charges setting
+}
+
+struct Location: Codable {
+    let uid: String
+    let typ: String          // Location type (H=Home, F=Office, etc.)
+    let nam: String?         // Location name
+    let add: String?         // Address
+    let cty: String?         // City
+    let geoLocation: GeoLocation?
+}
+
+struct GeoLocation: Codable {
+    let type: String         // "Point"
+    let coordinates: [Double] // [longitude, latitude]
+}
+
+struct ImageUploadResponseModel: Codable {
+    let imageId: String      // Use this to update profile.pid
+    let imageUrl: String?
+}
+
+struct Errors: Codable {
+    let general: [ErrorItem]?
+}
+
+struct ErrorItem: Codable {
+    let message: String
+    let messageCode: String
+}
+
+// MARK: - UserDefaults Keys
+struct UserDefaultsKeys {
+    static let userId = "user_id"
+    static let actingUserId = "acting_user_id"
+    static let apiSessionKey = "api_session_key"
+    static let notificationSettingStatus = "notification_setting_status"
+    static let languageSelected = "language_selected"
+    static let firstTimeLogin = "first_time_login"
+    static let pushToken = "push_token"
+    static let userProfile = "user_profile"
+}
+
+// MARK: - Registration Flow
+enum RegistrationStep: CaseIterable {
+    case mobileEntry
+    case otpVerification
+    case nameEntry
+    case photoUpload
+    case locationSetup
+    case completed
+}
 
 // MARK: - Tab Items
 enum TabItem: String, CaseIterable {
