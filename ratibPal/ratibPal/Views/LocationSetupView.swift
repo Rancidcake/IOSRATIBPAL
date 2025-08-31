@@ -16,9 +16,12 @@ struct LocationSetupView: View {
     @State private var searchText = ""
     @State private var placeName = ""
     @State private var address = ""
+    @State private var editableAddress = "1600 Amphitheatre Pkwy, Mountain View" // New state for editable address
     @State private var city = ""
     @State private var state = ""
     @State private var pinCode = ""
+    @State private var currentLocationAddress = "Getting your location..."
+    @State private var isCurrentLocationLoading = true
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 18.5204, longitude: 73.8567), // Pune coordinates
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
@@ -113,19 +116,55 @@ struct LocationSetupView: View {
                 
                 // Search location field
                 HStack {
-                    Text("Search your location")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    if isCurrentLocationLoading {
+                        ProgressView()
+                            .scaleEffect(0.7)
+                        Text("Getting your location...")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    } else {
+                        TextField("Search your location", text: $currentLocationAddress)
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .onSubmit {
+                                // Handle location search
+                                performLocationSearch()
+                            }
+                        
+                        Button(action: {
+                            refreshCurrentLocation()
+                        }) {
+                            Image(systemName: "location.circle.fill")
+                                .foregroundColor(.blue)
+                                .font(.system(size: 18))
+                        }
+                    }
                     
                     Spacer()
+                    
+                    // Show manual input hint when user has entered address
+                    if !isCurrentLocationLoading && editableAddress != "1600 Amphitheatre Pkwy, Mountain View" && !editableAddress.isEmpty {
+                        Text("Manual entry")
+                            .font(.caption)
+                            .foregroundColor(.green)
+                            .padding(.leading, 8)
+                    }
                 }
                 .padding(.horizontal, 20)
                 
                 // Address display
                 HStack {
-                    Text(address.isEmpty ? "1600 Amphitheatre Pkwy, Mountain View" : address)
+                    TextField("Enter your address", text: $editableAddress)
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.primary)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .onChange(of: editableAddress) { newValue in
+                            // If user is manually editing the address, stop location loading
+                            if newValue != "1600 Amphitheatre Pkwy, Mountain View" && !newValue.isEmpty {
+                                isCurrentLocationLoading = false
+                            }
+                        }
                     
                     Spacer()
                     
@@ -189,6 +228,11 @@ struct LocationSetupView: View {
             setupInitialValues()
             requestLocationPermission()
         }
+        .onChange(of: locationManager.currentLocation) { newLocation in
+            if let location = newLocation {
+                updateRegionAndAddress(for: location)
+            }
+        }
         .alert("Location Error", isPresented: .constant(locationManager.errorMessage != nil)) {
             Button("OK") {
                 locationManager.errorMessage = nil
@@ -206,11 +250,12 @@ struct LocationSetupView: View {
     }
     
     private var isFormValid: Bool {
-        !selectedLocationType.isEmpty && 
-        !address.isEmpty &&
-        !city.isEmpty &&
-        !state.isEmpty &&
-        !pinCode.isEmpty
+        // Allow saving if location type is selected and address is provided (either manually or via location)
+        // Be more lenient - just need location type and some address
+        !selectedLocationType.isEmpty && (
+            (!editableAddress.isEmpty && editableAddress != "1600 Amphitheatre Pkwy, Mountain View") ||
+            !address.isEmpty
+        )
     }
     
     private func setupInitialValues() {
@@ -221,11 +266,11 @@ struct LocationSetupView: View {
             selectedLocationType = "H"
         }
         
-        // Set sample address data
-        address = "1600 Amphitheatre Pkwy, Mountain View"
-        city = "Mountain View"
-        state = "California"
-        pinCode = "94043"
+        // Initially empty until we get actual location
+        address = ""
+        city = ""
+        state = ""
+        pinCode = ""
         
         // Setup sample location pins
         locationPins = [
@@ -238,7 +283,88 @@ struct LocationSetupView: View {
     }
     
     private func requestLocationPermission() {
+        isCurrentLocationLoading = true
         locationManager.requestLocation()
+    }
+    
+    private func updateRegionAndAddress(for location: CLLocation) {
+        region.center = location.coordinate
+        isCurrentLocationLoading = false
+        
+        // Perform reverse geocoding
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.currentLocationAddress = "Unable to get address"
+                    self.address = "Location unavailable"
+                }
+                print("Reverse geocoding error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first {
+                DispatchQueue.main.async {
+                    // Update the search field with current location
+                    let addressComponents = [
+                        placemark.subThoroughfare,
+                        placemark.thoroughfare,
+                        placemark.locality
+                    ].compactMap { $0 }.joined(separator: " ")
+                    
+                    self.currentLocationAddress = addressComponents.isEmpty ? "Current Location" : addressComponents
+                    
+                    // Update form fields
+                    self.address = [
+                        placemark.subThoroughfare,
+                        placemark.thoroughfare,
+                        placemark.subLocality
+                    ].compactMap { $0 }.joined(separator: " ")
+                    
+                    // Update the editable address field as well
+                    let fullAddress = [
+                        placemark.subThoroughfare,
+                        placemark.thoroughfare,
+                        placemark.locality,
+                        placemark.administrativeArea
+                    ].compactMap { $0 }.joined(separator: ", ")
+                    
+                    self.editableAddress = fullAddress.isEmpty ? "1600 Amphitheatre Pkwy, Mountain View" : fullAddress
+                    
+                    self.city = placemark.locality ?? ""
+                    self.state = placemark.administrativeArea ?? ""
+                    self.pinCode = placemark.postalCode ?? ""
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.currentLocationAddress = "Current Location"
+                    self.address = "Location found"
+                }
+            }
+        }
+    }
+    
+    private func refreshCurrentLocation() {
+        isCurrentLocationLoading = true
+        currentLocationAddress = "Getting your location..."
+        locationManager.requestLocation()
+    }
+    
+    private func performLocationSearch() {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(currentLocationAddress) { placemarks, error in
+            if let error = error {
+                print("Geocoding error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first,
+               let location = placemark.location {
+                DispatchQueue.main.async {
+                    self.updateRegionAndAddress(for: location)
+                }
+            }
+        }
     }
     
     private func updateLocationFromCoordinate(_ coordinate: CLLocationCoordinate2D) {
@@ -250,12 +376,17 @@ struct LocationSetupView: View {
     private func saveLocation() async {
         let coordinate = locationManager.currentLocation?.coordinate ?? region.center
         
+        // If user manually entered address and other fields are empty, provide reasonable defaults
+        let finalCity = city.isEmpty ? "Unknown City" : city
+        let finalState = state.isEmpty ? "Unknown State" : state  
+        let finalPinCode = pinCode.isEmpty ? "000000" : pinCode
+        
         await registrationManager.addLocation(
             title: placeName.isEmpty ? selectedLocationType : placeName,
-            address: address,
-            city: city,
-            state: state,
-            pinCode: pinCode,
+            address: editableAddress, // Use the editable address instead
+            city: finalCity,
+            state: finalState,
+            pinCode: finalPinCode,
             locationType: selectedLocationType,
             latitude: coordinate.latitude,
             longitude: coordinate.longitude

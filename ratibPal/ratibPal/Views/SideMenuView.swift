@@ -13,6 +13,7 @@ struct SideMenuView: View {
     @Binding var showPointOfSale: Bool
     @Binding var showFieldTeamTracker: Bool
     @EnvironmentObject var authManager: AuthenticationManager
+    @StateObject private var logoutManager = LogoutManager()
     @State private var showLogoutAlert = false
     
     private let menuItems = [
@@ -88,6 +89,12 @@ struct SideMenuView: View {
                                         .foregroundColor(.primary)
                                     
                                     Spacer()
+                                    
+                                    // Show loading indicator for logout
+                                    if item.1 == "Logout" && logoutManager.isLoggingOut {
+                                        ProgressView()
+                                            .scaleEffect(0.7)
+                                    }
                                 }
                                 .padding(.horizontal, 20)
                                 .padding(.vertical, 15)
@@ -113,36 +120,87 @@ struct SideMenuView: View {
                 Spacer()
             }
         }
-        .alert("Logout", isPresented: $showLogoutAlert) {
-            Button("Cancel", role: .cancel) { }
+        .confirmationDialog("Logout", isPresented: $showLogoutAlert, titleVisibility: .visible) {
             Button("Logout", role: .destructive) {
-                authManager.logout()
+                print("DEBUG: User confirmed logout")
+                // Close side menu immediately when logout starts
+                withAnimation {
+                    showSideMenu = false
+                }
+                Task {
+                    print("DEBUG: Starting logout process")
+                    let success = await logoutManager.performLogout()
+                    if success {
+                        print("DEBUG: Logout successful, resetting auth state")
+                        // Reset authentication state
+                        await MainActor.run {
+                            authManager.logout()
+                        }
+                    } else {
+                        print("DEBUG: Logout failed")
+                    }
+                }
+            }
+            Button("Cancel", role: .cancel) {
+                print("DEBUG: User cancelled logout")
+                // Close side menu when user cancels
+                withAnimation {
+                    showSideMenu = false
+                }
             }
         } message: {
-            Text("Are you sure you want to logout? You will need to login again to access your account.")
+            Text("Are you sure you want to logout? This will clear all your data and return you to the login screen.")
+        }
+        .onChange(of: showLogoutAlert) { newValue in
+            print("DEBUG: showLogoutAlert changed to: \(newValue)")
+        }
+        .alert("Logout Error", isPresented: .constant(logoutManager.logoutError != nil)) {
+            Button("OK") {
+                logoutManager.logoutError = nil
+            }
+        } message: {
+            if let error = logoutManager.logoutError {
+                Text(error)
+            }
         }
     }
     
     private func handleMenuAction(for item: String) {
         print("DEBUG: Menu item tapped: \(item)")
-        withAnimation {
-            showSideMenu = false
-        }
         
         switch item {
         case "Settings":
             print("DEBUG: Opening Settings")
+            withAnimation {
+                showSideMenu = false
+            }
             showSettings = true
         case "Logout":
-            showLogoutAlert = true
+            print("DEBUG: Attempting logout")
+            if !logoutManager.isLoggingOut {
+                print("DEBUG: Setting showLogoutAlert to true")
+                showLogoutAlert = true
+                // Don't close the side menu immediately for logout - let the alert handle it
+            } else {
+                print("DEBUG: Logout already in progress")
+            }
         case "Point of Sale":
             print("DEBUG: Opening Point of Sale")
+            withAnimation {
+                showSideMenu = false
+            }
             showPointOfSale = true
         case "Field team tracker":
             print("DEBUG: Opening Field Team Tracker")
+            withAnimation {
+                showSideMenu = false
+            }
             showFieldTeamTracker = true
         default:
             print("DEBUG: Unknown menu item: \(item)")
+            withAnimation {
+                showSideMenu = false
+            }
             break
         }
     }
