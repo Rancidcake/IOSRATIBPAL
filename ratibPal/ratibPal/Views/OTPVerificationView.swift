@@ -22,14 +22,14 @@ struct OTPVerificationView: View {
             Image("RatibPalLogo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 100, height: 100)
-                .padding(.bottom, 20)
+                .frame(width: 120, height: 100)
+                .padding(.top, 30)
             
             // App name
-            Text("ratibpal")
-                .font(.largeTitle)
-                .bold()
-                .foregroundColor(.blue)
+//            Text("ratibpal")
+//                .font(.largeTitle)
+//                .bold()
+//                .foregroundColor(.blue)
             
             // Title
             Text("Verification Code")

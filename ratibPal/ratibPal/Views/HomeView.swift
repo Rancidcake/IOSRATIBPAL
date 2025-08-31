@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject private var registrationManager = RegistrationFlowManager()
     @State private var showFAB = false
     @State private var showAffiliatePopup = false
     @State private var showAddGroupSheet = false
@@ -303,6 +304,11 @@ struct HomeView: View {
         .sheet(isPresented: $showFieldTeamTracker) {
             FieldTeamTrackerView()
         }
+        // Welcome overlay (shows after registration completion)
+        .overlay(
+            registrationManager.showWelcomeOverlay ? 
+            WelcomeOverlayView(isPresented: $registrationManager.showWelcomeOverlay) : nil
+        )
     }
 }
 

@@ -21,6 +21,7 @@ class RegistrationFlowManager: ObservableObject {
     @Published var isSupplier: Bool = false
     @Published var photoIDImage: UIImage?
     @Published var shouldSkipPhotoID: Bool = false
+    @Published var showWelcomeOverlay: Bool = false
     
     private let apiManager = RegistrationAPIManager.shared
     private var cancellables = Set<AnyCancellable>()
@@ -86,7 +87,7 @@ class RegistrationFlowManager: ObservableObject {
         }
         
         // Check if user is supplier and photo ID is missing
-        if let supplier = profile.sup, profile.pid?.isEmpty ?? true {
+        if let _ = profile.sup, profile.pid?.isEmpty ?? true {
             isSupplier = true
             currentStep = .photoUpload
             return
@@ -195,10 +196,10 @@ class RegistrationFlowManager: ObservableObject {
             )
             
             let response = try await apiManager.updateProfile(updatedProfile)
-            userProfile = updatedProfile
+            userProfile = updatedProfile // Use the updatedProfile we sent, not the response
             saveProfileLocally(updatedProfile)
             
-            print("Profile updated: \(response.message)")
+            print("Profile updated successfully: \(response.message)")
             nextStep()
         } catch {
             errorMessage = error.localizedDescription
@@ -234,7 +235,7 @@ class RegistrationFlowManager: ObservableObject {
                     eml: profile.eml,
                     img: profile.img,
                     irl: profile.irl,
-                    pid: response.imageId,
+                    pid: response.actualImageId,
                     stk: profile.stk,
                     plc: profile.plc,
                     pns: profile.pns,
@@ -276,6 +277,9 @@ class RegistrationFlowManager: ObservableObject {
         
         // Final step completed
         currentStep = .completed
+        
+        // Show welcome overlay
+        showWelcomeOverlay = true
     }
     
     // MARK: - Helper Methods
@@ -308,15 +312,22 @@ class RegistrationFlowManager: ObservableObject {
     }
     
     private func createSupplierProfile() -> Supplier {
-        let userId = UserDefaults.standard.currentUserId ?? UUID().uuidString
         return Supplier(
-            uid: userId,
             bnm: businessName.isEmpty ? nil : businessName,
             bpr: nil,
             scl: 1,
             dcn: nil,
             ucn: nil,
-            sdc: nil
+            sdc: nil,
+            mod: nil,
+            ent: nil,
+            lnp: nil,
+            cco: nil,
+            cat: nil,
+            sos: nil,
+            rem: nil,
+            ovd: nil,
+            vtl: nil
         )
     }
     
@@ -329,6 +340,46 @@ class RegistrationFlowManager: ObservableObject {
     }
     
     // MARK: - Validation
+    
+    // MARK: - Location Management
+    
+    @MainActor
+    func addLocation(title: String, address: String, city: String, state: String, pinCode: String, locationType: String, latitude: Double, longitude: Double, radius: Double = 100.0) async {
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            let geoLocation = GeoLocation(type: "Point", coordinates: [longitude, latitude])
+            let location = Location(
+                lid: UUID().uuidString,
+                adr: address,
+                ct: city,
+                glc: geoLocation,
+                lt: title,
+                pin: pinCode,
+                rad: radius,
+                st: state,
+                typ: locationType
+            )
+            
+            // Update user profile with new location
+            if var profile = userProfile {
+                var locations = profile.lcs ?? []
+                locations.append(location)
+                profile.lcs = locations
+                
+                // Update profile on server using the secure/users endpoint
+                let _ = try await apiManager.updateProfile(profile)
+                userProfile = profile // Use the updated profile we sent, not the response
+                saveProfileLocally(profile)
+            }
+            
+        } catch {
+            errorMessage = "Failed to add location: \(error.localizedDescription)"
+        }
+        
+        isLoading = false
+    }
     
     var isMobileValid: Bool {
         mobileNumber.count == 10 && mobileNumber.allSatisfy { $0.isNumber }

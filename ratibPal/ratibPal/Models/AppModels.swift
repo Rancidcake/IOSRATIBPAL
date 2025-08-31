@@ -69,7 +69,7 @@ struct Profile: Codable {
     let sup: Supplier?
     
     // Locations
-    let lcs: [Location]?
+    var lcs: [Location]?
     
     // Audit fields
     let ca: Int64            // Created at
@@ -80,22 +80,33 @@ struct Profile: Codable {
 }
 
 struct Supplier: Codable {
-    let uid: String
     let bnm: String?         // Business name
     let bpr: String?         // Business profile/description
     let scl: Int             // Supply chain level
     let dcn: String?         // Delivery contact number
     let ucn: String?         // Upstream contact number
     let sdc: String?         // Show delivery charges setting
+    let mod: String?         // Communication mode
+    let ent: String?         // Entry
+    let lnp: String?         // Line provider
+    let cco: String?         // Customer care officer
+    let cat: String?         // Category
+    let sos: String?         // Show other suppliers
+    let rem: String?         // Remarks
+    let ovd: String?         // Override
+    let vtl: Int?            // Vital (changed from String to Int to match server response)
 }
 
 struct Location: Codable {
-    let uid: String
-    let typ: String          // Location type (H=Home, F=Office, etc.)
-    let nam: String?         // Location name
-    let add: String?         // Address
-    let cty: String?         // City
-    let geoLocation: GeoLocation?
+    let lid: String          // Location ID
+    let adr: String?         // Full address
+    let ct: String?          // City
+    let glc: GeoLocation?    // Geo coordinates
+    let lt: String?          // Location title/name
+    let pin: String?         // PIN code
+    let rad: Double          // Radius
+    let st: String?          // State
+    let typ: String          // Location type (H=Home, F=Office, O=Other for personal; AREA, WAREHOUSE, STORE for business)
 }
 
 struct GeoLocation: Codable {
@@ -104,8 +115,18 @@ struct GeoLocation: Codable {
 }
 
 struct ImageUploadResponseModel: Codable {
-    let imageId: String      // Use this to update profile.pid
-    let imageUrl: String?
+    let fId: String          // File ID from server
+    let fUrl: String?        // Full image URL
+    let thumbUrl: String?    // Thumbnail URL
+    
+    // For backward compatibility, map to the expected field names
+    var actualImageId: String {
+        return fId
+    }
+    
+    var actualImageUrl: String? {
+        return fUrl
+    }
 }
 
 struct Errors: Codable {

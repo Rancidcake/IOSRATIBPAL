@@ -145,7 +145,7 @@ struct PhotoUploadView: View {
                                 Text("Uploading...")
                                     .foregroundColor(.white)
                             } else {
-                                Image(systemName: "cloud.upload.fill")
+                                Image(systemName: "icloud.and.arrow.up.fill")
                                 Text("Upload Photo ID")
                                     .foregroundColor(.white)
                             }
