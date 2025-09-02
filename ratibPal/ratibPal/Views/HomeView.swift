@@ -10,6 +10,7 @@ struct HomeView: View {
     @State private var showSideMenu = false
     @State private var selectedFilter: FilterOption = .all
     @State private var isDefaultLineExpanded = false
+    @State private var showWelcomeOverlay = false
     
     // SideMenu sheet states
     @State private var showSettings = false
@@ -270,8 +271,25 @@ struct HomeView: View {
                     Spacer()
                 }
             }
+            
+            // Welcome Overlay for new user registrations
+            if showWelcomeOverlay {
+                WelcomeOverlayView(isPresented: $showWelcomeOverlay)
+            }
         }
         .navigationBarHidden(true)
+        .onAppear {
+            // Check if this is a new user registration and should show welcome overlay
+            if UserDefaults.standard.shouldShowWelcomeOverlay {
+                showWelcomeOverlay = true
+            }
+        }
+        .onChange(of: showWelcomeOverlay) { _, newValue in
+            if !newValue {
+                // User dismissed the welcome overlay, mark it as shown
+                UserDefaults.standard.setWelcomeOverlayShown()
+            }
+        }
         // Sheets & Popups
         .sheet(isPresented: $showAffiliatePopup) {
             AffiliatePopupView(affiliates: affiliates) { _ in }
@@ -304,11 +322,6 @@ struct HomeView: View {
         .sheet(isPresented: $showFieldTeamTracker) {
             FieldTeamTrackerView()
         }
-        // Welcome overlay (shows after registration completion)
-        .overlay(
-            registrationManager.showWelcomeOverlay ? 
-            WelcomeOverlayView(isPresented: $registrationManager.showWelcomeOverlay) : nil
-        )
     }
 }
 

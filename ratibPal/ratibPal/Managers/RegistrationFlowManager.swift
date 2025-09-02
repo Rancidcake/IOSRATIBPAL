@@ -275,6 +275,9 @@ class RegistrationFlowManager: ObservableObject {
         // Mark first time login as complete
         UserDefaults.standard.set(false, forKey: UserDefaultsKeys.firstTimeLogin)
         
+        // Mark that this is a new user registration (should show welcome overlay)
+        UserDefaults.standard.markNewUserRegistration()
+        
         // Final step completed
         currentStep = .completed
         

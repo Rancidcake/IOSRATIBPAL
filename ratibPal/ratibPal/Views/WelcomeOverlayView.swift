@@ -36,7 +36,7 @@ struct WelcomeOverlayView: View {
                         .lineLimit(nil)
                 }
                 
-                Spacer()
+//                Spacer()
                 
                 // Description text
                 Text("Simply add your existing customers here. A SMS is sent to them to start using Consumer app. Until they join, you can anyways track the deliveries for yourself.")

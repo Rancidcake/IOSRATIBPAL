@@ -31,7 +31,8 @@ struct RegistrationFlowView: View {
                     LocationSetupView(registrationManager: registrationManager)
                     
                 case .completed:
-                    RegistrationCompleteView(onComplete: onRegistrationComplete)
+                    // Registration completed - this will be handled by onChange
+                    EmptyView()
                 }
             }
             .navigationBarHidden(true)

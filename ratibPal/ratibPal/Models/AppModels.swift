@@ -148,6 +148,7 @@ struct UserDefaultsKeys {
     static let firstTimeLogin = "first_time_login"
     static let pushToken = "push_token"
     static let userProfile = "user_profile"
+    static let shouldShowWelcomeOverlay = "should_show_welcome_overlay"
 }
 
 // MARK: - Registration Flow

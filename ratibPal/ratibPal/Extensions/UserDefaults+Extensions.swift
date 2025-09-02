@@ -27,6 +27,7 @@ extension UserDefaults {
         removeObject(forKey: UserDefaultsKeys.actingUserId)
         removeObject(forKey: UserDefaultsKeys.apiSessionKey)
         removeObject(forKey: UserDefaultsKeys.userProfile)
+        removeObject(forKey: UserDefaultsKeys.shouldShowWelcomeOverlay)
         set(true, forKey: UserDefaultsKeys.firstTimeLogin)
         set(true, forKey: UserDefaultsKeys.notificationSettingStatus)
         set("en", forKey: UserDefaultsKeys.languageSelected)
@@ -60,5 +61,21 @@ extension UserDefaults {
             return true
         }
         return bool(forKey: UserDefaultsKeys.notificationSettingStatus)
+    }
+    
+    var shouldShowWelcomeOverlay: Bool {
+        if object(forKey: UserDefaultsKeys.shouldShowWelcomeOverlay) == nil {
+            // Default to false if not set
+            return false
+        }
+        return bool(forKey: UserDefaultsKeys.shouldShowWelcomeOverlay)
+    }
+    
+    func setWelcomeOverlayShown() {
+        set(false, forKey: UserDefaultsKeys.shouldShowWelcomeOverlay)
+    }
+    
+    func markNewUserRegistration() {
+        set(true, forKey: UserDefaultsKeys.shouldShowWelcomeOverlay)
     }
 }
