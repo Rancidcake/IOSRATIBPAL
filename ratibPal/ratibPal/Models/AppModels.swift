@@ -80,33 +80,41 @@ struct Profile: Codable {
 }
 
 struct Supplier: Codable {
-    let bnm: String?         // Business name
-    let bpr: String?         // Business profile/description
-    let scl: Int             // Supply chain level
-    let dcn: String?         // Delivery contact number
-    let ucn: String?         // Upstream contact number
-    let sdc: String?         // Show delivery charges setting
+    let uid: String?         // User ID (Foreign key to Profile) - Added per documentation
     let mod: String?         // Communication mode
-    let ent: String?         // Entry
-    let lnp: String?         // Line provider
-    let cco: String?         // Customer care officer
-    let cat: String?         // Category
+    let bnm: String?         // Business name
+    let bpr: String?         // Business profile description
+    let sdc: String?         // Show delivery charge separately
     let sos: String?         // Show other suppliers
-    let rem: String?         // Remarks
-    let ovd: String?         // Override
-    let vtl: Int?            // Vital (changed from String to Int to match server response)
+    let ovd: String?         // Admin override setting
+    let ccos: String?        // Change cut-off durations as CSV - Added per documentation
+    let ent: String?         // Enterprise ID
+    let cat: String?         // Category IDs as CSV
+    let scl: Int             // Supply chain level (1-7)
+    let vtl: Int             // Visible to levels
+    let dcn: String?         // Downstream contact number
+    let ucn: String?         // Upstream contact number
+    
+    // Removed fields that don't match documentation:
+    // - lnp (Line provider)
+    // - cco (Customer care officer) 
+    // - rem (Remarks)
 }
 
 struct Location: Codable {
-    let lid: String          // Location ID
-    let adr: String?         // Full address
+    let lid: String          // Location ID (Primary key)
+    let uid: String?         // User ID (Foreign key) - Added per documentation
+    let hno: String?         // House/store number - Added per documentation
+    let adr: String?         // Address
+    let lt: String?          // Locality - matches documentation
     let ct: String?          // City
-    let glc: GeoLocation?    // Geo coordinates
-    let lt: String?          // Location title/name
-    let pin: String?         // PIN code
-    let rad: Double          // Radius
     let st: String?          // State
-    let typ: String          // Location type (H=Home, F=Office, O=Other for personal; AREA, WAREHOUSE, STORE for business)
+    let pin: String?         // PIN code
+    let glt: String?         // Geolocation type ("Point") - Added per documentation
+    let gll: String?         // Geolocation lat,lng as CSV - Added per documentation
+    let typ: String?         // Location type (H=home, F=office, etc.) - Made optional
+    let rad: Double          // Radius for delivery
+    let glc: GeoLocation?    // Geo coordinates - Keep for convenience
 }
 
 struct GeoLocation: Codable {

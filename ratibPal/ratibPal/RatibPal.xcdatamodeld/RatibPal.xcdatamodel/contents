@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="25A5349a" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CDCategory" representedClassName="CDCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="ca" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cid" attributeType="String"/>
+        <attribute name="dsc" optional="YES" attributeType="String"/>
+        <attribute name="nm" optional="YES" attributeType="String"/>
+        <attribute name="stk" optional="YES" attributeType="String"/>
+        <attribute name="typ" optional="YES" attributeType="String"/>
+        <attribute name="ua" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="CDLocation" representedClassName="CDLocation" syncable="YES" codeGenerationType="class">
+        <attribute name="adr" optional="YES" attributeType="String"/>
+        <attribute name="ct" optional="YES" attributeType="String"/>
+        <attribute name="gll" optional="YES" attributeType="String"/>
+        <attribute name="glt" optional="YES" attributeType="String"/>
+        <attribute name="hno" optional="YES" attributeType="String"/>
+        <attribute name="lid" attributeType="String"/>
+        <attribute name="lt" optional="YES" attributeType="String"/>
+        <attribute name="pin" optional="YES" attributeType="String"/>
+        <attribute name="rad" optional="YES" attributeType="Double" defaultValueString="100" usesScalarValueType="YES"/>
+        <attribute name="st" optional="YES" attributeType="String"/>
+        <attribute name="typ" optional="YES" attributeType="String"/>
+        <attribute name="uid" optional="YES" attributeType="String"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDProfile" inverseName="locations" inverseEntity="CDProfile"/>
+    </entity>
+    <entity name="CDProfile" representedClassName="CDProfile" syncable="YES" codeGenerationType="class">
+        <attribute name="blk" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="ca" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cb" optional="YES" attributeType="String"/>
+        <attribute name="d" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="e" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="eml" optional="YES" attributeType="String"/>
+        <attribute name="img" optional="YES" attributeType="String"/>
+        <attribute name="irl" optional="YES" attributeType="String"/>
+        <attribute name="mno" optional="YES" attributeType="String"/>
+        <attribute name="nam" optional="YES" attributeType="String"/>
+        <attribute name="off" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="pid" optional="YES" attributeType="String"/>
+        <attribute name="plc" optional="YES" attributeType="String"/>
+        <attribute name="pns" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="stk" optional="YES" attributeType="String"/>
+        <attribute name="ua" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="ub" optional="YES" attributeType="String"/>
+        <attribute name="uid" attributeType="String"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDLocation" inverseName="profile" inverseEntity="CDLocation"/>
+        <relationship name="supplier" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDSupplier" inverseName="profile" inverseEntity="CDSupplier"/>
+    </entity>
+    <entity name="CDSupplier" representedClassName="CDSupplier" syncable="YES" codeGenerationType="class">
+        <attribute name="bnm" optional="YES" attributeType="String"/>
+        <attribute name="bpr" optional="YES" attributeType="String"/>
+        <attribute name="cat" optional="YES" attributeType="String"/>
+        <attribute name="ccos" optional="YES" attributeType="String"/>
+        <attribute name="dcn" optional="YES" attributeType="String"/>
+        <attribute name="ent" optional="YES" attributeType="String"/>
+        <attribute name="mod" optional="YES" attributeType="String"/>
+        <attribute name="ovd" optional="YES" attributeType="String"/>
+        <attribute name="scl" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sdc" optional="YES" attributeType="String"/>
+        <attribute name="sos" optional="YES" attributeType="String"/>
+        <attribute name="ucn" optional="YES" attributeType="String"/>
+        <attribute name="uid" optional="YES" attributeType="String"/>
+        <attribute name="vtl" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDProfile" inverseName="supplier" inverseEntity="CDProfile"/>
+    </entity>
+</model>

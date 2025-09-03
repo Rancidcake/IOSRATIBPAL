@@ -40,12 +40,13 @@ class RegistrationAPIManager {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
         // Add language header
-        let language = UserDefaults.standard.selectedLanguage
+        let sessionManager = SessionManager.shared
+        let language = sessionManager.getLanguage()
         request.setValue(language, forHTTPHeaderField: "Accept-Language")
         
         // Add authentication if required
         if requiresAuth {
-            let apiKey = UserDefaults.standard.currentAPIKey ?? ""
+            let apiKey = sessionManager.getApiSessionKey() ?? ""
             request.setValue(apiKey, forHTTPHeaderField: "X-API-KEY")
         }
         
@@ -149,10 +150,11 @@ class RegistrationAPIManager {
         
         let profile = try await performRequest(urlRequest, responseType: Profile.self)
         
-        // Save session data
-        UserDefaults.standard.set(profile.uid, forKey: UserDefaultsKeys.userId)
-        UserDefaults.standard.set(profile.stk, forKey: UserDefaultsKeys.apiSessionKey)
-        UserDefaults.standard.set(profile.pns, forKey: UserDefaultsKeys.notificationSettingStatus)
+        // Save session data using SessionManager for secure storage
+        let sessionManager = SessionManager.shared
+        sessionManager.setUserId(profile.uid)
+        sessionManager.setApiSessionKey(profile.stk)
+        sessionManager.setNotificationSettingStatus(profile.pns)
         
         return profile
     }

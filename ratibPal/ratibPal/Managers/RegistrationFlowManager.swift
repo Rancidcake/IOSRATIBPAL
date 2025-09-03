@@ -24,6 +24,8 @@ class RegistrationFlowManager: ObservableObject {
     @Published var showWelcomeOverlay: Bool = false
     
     private let apiManager = RegistrationAPIManager.shared
+    private let sessionManager = SessionManager.shared
+    private let coreDataManager = CoreDataManager.shared
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Step Navigation
@@ -316,30 +318,73 @@ class RegistrationFlowManager: ObservableObject {
     
     private func createSupplierProfile() -> Supplier {
         return Supplier(
+            uid: nil,
+            mod: nil,
             bnm: businessName.isEmpty ? nil : businessName,
             bpr: nil,
-            scl: 1,
-            dcn: nil,
-            ucn: nil,
             sdc: nil,
-            mod: nil,
-            ent: nil,
-            lnp: nil,
-            cco: nil,
-            cat: nil,
             sos: nil,
-            rem: nil,
             ovd: nil,
-            vtl: nil
+            ccos: nil,
+            ent: nil,
+            cat: nil,
+            scl: 1,
+            vtl: 0,
+            dcn: nil,
+            ucn: nil
         )
     }
     
     private func saveProfileLocally(_ profile: Profile) {
+        // Save to UserDefaults for backward compatibility
         UserDefaults.standard.setUserProfile(profile)
+        
+        // Save to Core Data for better data management
+        coreDataManager.saveProfile(profile) { [weak self] success in
+            DispatchQueue.main.async {
+                if success {
+                    print("Profile saved to Core Data successfully")
+                } else {
+                    print("Failed to save profile to Core Data")
+                }
+            }
+        }
+        
+        // Update session manager
+        sessionManager.setUserId(profile.uid)
+        // Use profile UID as acting user since supplier doesn't have separate ID
+        sessionManager.setActingUserId(profile.uid)
+        
+        // Set business category from supplier if available
+        if let bizCat = profile.sup?.cat {
+            sessionManager.setUserBizCat(bizCat)
+        }
+        
+        // Set supply chain level if supplier
+        if let suppChainLevel = profile.sup?.scl {
+            sessionManager.setUserSuppChainLevel(Int(suppChainLevel))
+        }
     }
     
     func loadProfileFromLocal() {
-        userProfile = UserDefaults.standard.getUserProfile()
+        // Try loading from Core Data first
+        if let userId = sessionManager.getUserId() {
+            coreDataManager.fetchProfile(uid: userId) { [weak self] profile in
+                DispatchQueue.main.async {
+                    if let profile = profile {
+                        self?.userProfile = profile
+                        print("Profile loaded from Core Data")
+                    } else {
+                        // Fallback to UserDefaults
+                        self?.userProfile = UserDefaults.standard.getUserProfile()
+                        print("Profile loaded from UserDefaults")
+                    }
+                }
+            }
+        } else {
+            // Fallback to UserDefaults
+            userProfile = UserDefaults.standard.getUserProfile()
+        }
     }
     
     // MARK: - Validation
@@ -355,14 +400,18 @@ class RegistrationFlowManager: ObservableObject {
             let geoLocation = GeoLocation(type: "Point", coordinates: [longitude, latitude])
             let location = Location(
                 lid: UUID().uuidString,
+                uid: userProfile?.uid,
+                hno: nil,
                 adr: address,
-                ct: city,
-                glc: geoLocation,
                 lt: title,
-                pin: pinCode,
-                rad: radius,
+                ct: city,
                 st: state,
-                typ: locationType
+                pin: pinCode,
+                glt: "Point",
+                gll: "\(latitude),\(longitude)",
+                typ: locationType,
+                rad: radius,
+                glc: geoLocation
             )
             
             // Update user profile with new location
