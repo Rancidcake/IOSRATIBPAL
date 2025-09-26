@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="25A5349a" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24299" systemVersion="25B5042k" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="CDCategory" representedClassName="CDCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="bannerId" optional="YES" attributeType="String"/>
         <attribute name="ca" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cb" optional="YES" attributeType="String"/>
         <attribute name="cid" attributeType="String"/>
+        <attribute name="cnm" optional="YES" attributeType="String"/>
+        <attribute name="d" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="dsc" optional="YES" attributeType="String"/>
+        <attribute name="gci" attributeType="String"/>
+        <attribute name="iconGreyId" optional="YES" attributeType="String"/>
+        <attribute name="iconId" optional="YES" attributeType="String"/>
         <attribute name="nm" optional="YES" attributeType="String"/>
+        <attribute name="seq" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="stk" optional="YES" attributeType="String"/>
+        <attribute name="stp" optional="YES" attributeType="String"/>
         <attribute name="typ" optional="YES" attributeType="String"/>
         <attribute name="ua" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="ub" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="CDGSU" representedClassName="CDGSU" syncable="YES" codeGenerationType="class">
+        <attribute name="anp" optional="YES" attributeType="String"/>
+        <attribute name="ca" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cb" optional="YES" attributeType="String"/>
+        <attribute name="cc" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cl" optional="YES" attributeType="String"/>
+        <attribute name="d" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="dsc" optional="YES" attributeType="String"/>
+        <attribute name="e" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="edt" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="gci" optional="YES" attributeType="String"/>
+        <attribute name="gid" attributeType="String"/>
+        <attribute name="img" optional="YES" attributeType="String"/>
+        <attribute name="nam" optional="YES" attributeType="String"/>
+        <attribute name="pub" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="sdt" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shn" optional="YES" attributeType="String"/>
+        <attribute name="sid" optional="YES" attributeType="String"/>
+        <attribute name="ua" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="ub" optional="YES" attributeType="String"/>
+        <attribute name="ul" optional="YES" attributeType="String"/>
+        <relationship name="prices" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDPrice" inverseName="gsu" inverseEntity="CDPrice"/>
+        <relationship name="sources" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDGSUSource" inverseName="gsu" inverseEntity="CDGSUSource"/>
+        <relationship name="variants" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDVariant" inverseName="gsu" inverseEntity="CDVariant"/>
+    </entity>
+    <entity name="CDGSUSource" representedClassName="CDGSUSource" syncable="YES" codeGenerationType="class">
+        <attribute name="gid" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="npc" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="qdi" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="sai" optional="YES" attributeType="String"/>
+        <attribute name="sgi" optional="YES" attributeType="String"/>
+        <attribute name="svi" optional="YES" attributeType="String"/>
+        <attribute name="vid" optional="YES" attributeType="String"/>
+        <relationship name="gsu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDGSU" inverseName="sources" inverseEntity="CDGSU"/>
     </entity>
     <entity name="CDLocation" representedClassName="CDLocation" syncable="YES" codeGenerationType="class">
         <attribute name="adr" optional="YES" attributeType="String"/>
@@ -23,6 +69,25 @@
         <attribute name="typ" optional="YES" attributeType="String"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDProfile" inverseName="locations" inverseEntity="CDProfile"/>
+    </entity>
+    <entity name="CDPrice" representedClassName="CDPrice" syncable="YES" codeGenerationType="class">
+        <attribute name="bp" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="dbps" optional="YES" attributeType="String"/>
+        <attribute name="dcm" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="dco" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="dpps" optional="YES" attributeType="String"/>
+        <attribute name="dsps" optional="YES" attributeType="String"/>
+        <attribute name="dtps" optional="YES" attributeType="String"/>
+        <attribute name="gid" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="odt" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pp" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="sp" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="stp" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="tcss" optional="YES" attributeType="String"/>
+        <attribute name="trm" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="vid" optional="YES" attributeType="String"/>
+        <relationship name="gsu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDGSU" inverseName="prices" inverseEntity="CDGSU"/>
     </entity>
     <entity name="CDProfile" representedClassName="CDProfile" syncable="YES" codeGenerationType="class">
         <attribute name="blk" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -62,5 +127,17 @@
         <attribute name="uid" optional="YES" attributeType="String"/>
         <attribute name="vtl" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDProfile" inverseName="supplier" inverseEntity="CDProfile"/>
+    </entity>
+    <entity name="CDVariant" representedClassName="CDVariant" syncable="YES" codeGenerationType="class">
+        <attribute name="bcd" optional="YES" attributeType="String"/>
+        <attribute name="cc" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cl" optional="YES" attributeType="String"/>
+        <attribute name="gid" attributeType="String"/>
+        <attribute name="img" optional="YES" attributeType="String"/>
+        <attribute name="pub" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="s" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="vid" attributeType="String"/>
+        <attribute name="vnm" optional="YES" attributeType="String"/>
+        <relationship name="gsu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDGSU" inverseName="variants" inverseEntity="CDGSU"/>
     </entity>
 </model>
