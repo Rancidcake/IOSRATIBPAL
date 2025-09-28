@@ -1,10 +1,3 @@
-//
-//  LocationSetupView.swift
-//  ratibPal
-//
-//  Created by AI Assistant on 28/08/25.
-//
-
 import SwiftUI
 import CoreLocation
 import MapKit

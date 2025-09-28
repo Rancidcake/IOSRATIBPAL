@@ -1,10 +1,3 @@
-//
-//  POSHistoryView.swift
-//  ratibPal
-//
-//  Created by GitHub Copilot on 27/07/25.
-//
-
 import SwiftUI
 
 struct POSHistoryView: View {

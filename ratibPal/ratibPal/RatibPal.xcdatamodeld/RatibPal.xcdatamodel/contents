@@ -21,6 +21,7 @@
     </entity>
     <entity name="CDGSU" representedClassName="CDGSU" syncable="YES" codeGenerationType="class">
         <attribute name="anp" optional="YES" attributeType="String"/>
+        <attribute name="bcd" optional="YES" attributeType="String"/>
         <attribute name="ca" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="cb" optional="YES" attributeType="String"/>
         <attribute name="cc" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -34,6 +35,7 @@
         <attribute name="img" optional="YES" attributeType="String"/>
         <attribute name="nam" optional="YES" attributeType="String"/>
         <attribute name="pub" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="sdc" optional="YES" attributeType="String"/>
         <attribute name="sdt" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shn" optional="YES" attributeType="String"/>
         <attribute name="sid" optional="YES" attributeType="String"/>

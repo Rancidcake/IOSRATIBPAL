@@ -1,10 +1,3 @@
-//
-//  WelcomeOverlayView.swift
-//  ratibPal
-//
-//  Created by AI Assistant on 31/08/25.
-//
-
 import SwiftUI
 
 struct WelcomeOverlayView: View {
