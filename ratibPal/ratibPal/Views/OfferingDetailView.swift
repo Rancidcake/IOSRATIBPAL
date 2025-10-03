@@ -47,7 +47,7 @@ struct OfferingDetailView: View {
                 }
             }
             .sheet(isPresented: $showingEditView) {
-                AddEditOfferingView(offeringViewModel: viewModel, editingOffering: offering)
+                EditOfferingView(offeringViewModel: viewModel, editingOffering: offering)
             }
             .alert("Delete Offering", isPresented: $showingDeleteAlert) {
                 Button("Cancel", role: .cancel) { }

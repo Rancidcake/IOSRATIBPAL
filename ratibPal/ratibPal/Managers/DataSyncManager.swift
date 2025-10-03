@@ -49,12 +49,17 @@ class DataSyncManager: ObservableObject {
             try await syncSuppliers()
             await updateProgress(0.6)
             
-            // Step 4: Sync locations (80% progress)
+            // Step 4: Skip offerings sync - focusing on local storage only
+            await updateProgress(0.5)
+            print("📋 Offering sync disabled - using local storage only")
+            await updateProgress(0.6)
+            
+            // Step 5: Sync locations (80% progress)
             await updateProgress(0.7)
             try await syncLocations()
             await updateProgress(0.8)
             
-            // Step 5: Complete sync (100% progress)
+            // Step 6: Complete sync (100% progress)
             await updateProgress(0.9)
             await completeSyncProcess()
             await updateProgress(1.0)
@@ -89,6 +94,9 @@ class DataSyncManager: ObservableObject {
             
             await updateProgress(0.4)
             try await syncCategoriesIfNeeded(since: lastSyncTimestamp)
+            
+            await updateProgress(0.5)
+            try await syncOfferingsIfNeeded(since: lastSyncTimestamp)
             
             await updateProgress(0.6)
             try await syncSuppliersIfNeeded(since: lastSyncTimestamp)
@@ -157,6 +165,8 @@ class DataSyncManager: ObservableObject {
         sessionManager.setAffiliatesSyncTimestamp(currentTimestamp)
     }
     
+    // Offering sync removed - focusing on local storage only
+    
     private func syncLocations() async throws {
         guard let userId = sessionManager.getUserId() else {
             throw SyncError.missingUserId
@@ -201,6 +211,11 @@ class DataSyncManager: ObservableObject {
         if timestamp > lastCategorySync {
             try await syncCategories()
         }
+    }
+    
+    private func syncOfferingsIfNeeded(since timestamp: Int64) async throws {
+        print("⚠️ Offering sync disabled - using local storage only")
+        // No-op: offering sync has been disabled to focus on local storage only
     }
     
     private func syncSuppliersIfNeeded(since timestamp: Int64) async throws {
@@ -271,9 +286,12 @@ class DataSyncManager: ObservableObject {
         sessionManager.setCategorySyncTimestamp(0)
         sessionManager.setAffiliatesSyncTimestamp(0)
         sessionManager.setOrdersSyncTimestamp(0)
-        sessionManager.setMyOfferingSyncTimestamp(0)
+        // Offering sync timestamps removed - focusing on local storage only 
         sessionManager.setDeliveriesSyncTimestamp(0)
         sessionManager.setBillsSyncTimestamp(0)
+        
+        // Offering sync keys removed - focusing on local storage only
+        UserDefaults.standard.removeObject(forKey: "lastCategorySync")
     }
     
     // MARK: - Background Sync

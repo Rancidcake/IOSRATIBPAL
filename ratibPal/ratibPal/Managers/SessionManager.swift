@@ -107,13 +107,7 @@ class SessionManager {
         return Int64(userDefaults.double(forKey: "affiliates_sync_timestamp"))
     }
     
-    func setMyOfferingSyncTimestamp(_ timestamp: Int64) {
-        userDefaults.set(timestamp, forKey: "my_offering_sync_timestamp")
-    }
-    
-    func getMyOfferingSyncTimestamp() -> Int64 {
-        return Int64(userDefaults.double(forKey: "my_offering_sync_timestamp"))
-    }
+    // Offering sync timestamp methods removed - focusing on local storage only
     
     func setDeliveriesSyncTimestamp(_ timestamp: Int64) {
         userDefaults.set(timestamp, forKey: "deliveries_sync_timestamp")
@@ -137,6 +131,28 @@ class SessionManager {
     
     func getSyncTimestamp() -> Int64 {
         return Int64(userDefaults.double(forKey: "sync_timestamp"))
+    }
+    
+
+    
+    // Linked offering sync timestamp methods removed - focusing on local storage only
+    
+    func setMyOfferingLocalEditsTimestamp(_ timestamp: Int64) {
+        userDefaults.set(timestamp, forKey: "my_offering_localedits_timestamp")
+    }
+    
+    func getMyOfferingLocalEditsTimestamp() -> Int64 {
+        return Int64(userDefaults.double(forKey: "my_offering_localedits_timestamp"))
+    }
+    
+    // MARK: - User Supplier Chain Level (Following Android implementation)
+    func setUserSupplierChainLevel(_ level: Int) {
+        userDefaults.set(level, forKey: "user_supplier_chain_level")
+    }
+    
+    func getUserSupplierChainLevel() -> Int? {
+        let level = userDefaults.integer(forKey: "user_supplier_chain_level")
+        return level == 0 ? nil : level
     }
     
     // MARK: - User State

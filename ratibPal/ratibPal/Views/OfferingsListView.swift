@@ -7,6 +7,7 @@ struct OfferingsListView: View {
     @State private var selectedOffering: OfferingModel?
     @State private var showingOfferingDetail = false
     @State private var searchText = ""
+    @State private var showOrganizedView = false
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -30,12 +31,22 @@ struct OfferingsListView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    showingAddOffering = true
-                }) {
-                    Image(systemName: "plus")
-                        .foregroundColor(.white)
-                        .font(.title2)
+                HStack(spacing: 16) {
+                    Button(action: {
+                        showOrganizedView.toggle()
+                    }) {
+                        Image(systemName: showOrganizedView ? "list.bullet" : "rectangle.3.group")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                    }
+                    
+                    Button(action: {
+                        showingAddOffering = true
+                    }) {
+                        Image(systemName: "plus")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                    }
                 }
             }
             .padding(.horizontal, 16)
@@ -45,7 +56,9 @@ struct OfferingsListView: View {
             VStack(spacing: 0) {
                 // Search Bar
                 SearchBar(text: $searchText, onSearchButtonClicked: {
-                    viewModel.searchOfferings(searchText)
+                    Task {
+                        await viewModel.performAdvancedSearch(searchText)
+                    }
                 }, onClearButtonClicked: {
                     searchText = ""
                     viewModel.searchOfferings("")
@@ -65,12 +78,18 @@ struct OfferingsListView: View {
                 // Content
                 if viewModel.isLoading && viewModel.offerings.isEmpty {
                     LoadingView {
-                // Handle loading completion if needed
-            }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        // Handle loading completion if needed
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if viewModel.offerings.isEmpty {
-                    EmptyOfferingsView {
-                        showingAddOffering = true
+                    // Android-style empty state
+                    VStack {
+                        Spacer()
+                        Text("No offerings available")
+                            .font(.system(size: 14))
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                        Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
@@ -83,7 +102,7 @@ struct OfferingsListView: View {
             await viewModel.refreshOfferings()
         }
         .sheet(isPresented: $showingAddOffering) {
-            AddEditOfferingView(offeringViewModel: viewModel)
+            OfferingCategorySelectionView()
         }
         .sheet(isPresented: $showingFilters) {
             OfferingFiltersView(
@@ -113,7 +132,21 @@ struct OfferingsListView: View {
     
     private var offeringsContent: some View {
         List {
-            if viewModel.categories.isEmpty {
+            if showOrganizedView {
+                // Enhanced organization with headers (Android pattern)
+                ForEach(viewModel.getOfferingsWithHeaders()) { item in
+                    switch item {
+                    case .header(let title):
+                        CategoryHeaderView(title: title)
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                    case .offering(let offering):
+                        OfferingRowView(offering: offering) {
+                            selectedOffering = offering
+                        }
+                    }
+                }
+            } else if viewModel.categories.isEmpty {
                 // Simple list when no categories
                 ForEach(viewModel.offerings, id: \.gid) { offering in
                     OfferingRowView(offering: offering) {
@@ -122,7 +155,7 @@ struct OfferingsListView: View {
                 }
                 .onDelete(perform: deleteOfferings)
             } else {
-                // Grouped by category
+                // Traditional grouped by category
                 ForEach(viewModel.offeringsByCategory.keys.sorted(), id: \.self) { category in
                     Section(header: Text(category)) {
                         ForEach(viewModel.offeringsByCategory[category] ?? [], id: \.gid) { offering in
@@ -356,6 +389,30 @@ struct OfferingRowView: View {
             .padding(.vertical, 4)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// MARK: - Category Header View
+struct CategoryHeaderView: View {
+    let title: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.headline)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+            
+            Spacer()
+            
+            Rectangle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(height: 1)
+                .frame(maxWidth: .infinity)
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 16)
+        .background(Color(.systemGroupedBackground))
     }
 }
 

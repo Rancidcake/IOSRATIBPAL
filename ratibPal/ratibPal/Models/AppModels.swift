@@ -254,9 +254,45 @@ enum FilterOption: String, CaseIterable {
 
 // MARK: - API Response Models for Offerings
 struct OfferingAPIResponse: Codable {
-    let success: Bool
+    let success: Bool?
     let message: String?
     let data: [GSUResponse]?
+    
+    // Custom init for different API response formats
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // Try to decode as standard response with success field
+        if let success = try? container.decode(Bool.self, forKey: .success) {
+            self.success = success
+            self.message = try? container.decode(String.self, forKey: .message)
+            self.data = try? container.decode([GSUResponse].self, forKey: .data)
+        } else {
+            // If no success field, try to decode directly as array
+            if let singleContainer = try? decoder.singleValueContainer(),
+               let directArray = try? singleContainer.decode([GSUResponse].self) {
+                self.success = true
+                self.message = nil
+                self.data = directArray
+            } else {
+                // Last attempt: try to get data directly from root
+                self.success = true
+                self.message = try? container.decode(String.self, forKey: .message)
+                self.data = try? container.decode([GSUResponse].self, forKey: .data)
+            }
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(success, forKey: .success)
+        try container.encodeIfPresent(message, forKey: .message)
+        try container.encodeIfPresent(data, forKey: .data)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case success, message, data
+    }
 }
 
 struct GSUResponse: Codable {

@@ -36,7 +36,7 @@ class AddEditOfferingViewModel: ObservableObject {
     @Published var deliveryChargePerMonth: Double = 0
     
     private let offeringViewModel: OfferingViewModel
-    private let syncManager = OfferingSyncManager.shared
+    // Sync manager removed - focusing on local storage only
     private var isEditMode: Bool
     
     init(offering: OfferingModel? = nil, offeringViewModel: OfferingViewModel) {
@@ -162,17 +162,13 @@ class AddEditOfferingViewModel: ObservableObject {
         errorMessage = nil
         
         for image in selectedImages {
-            do {
-                guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-                    continue
-                }
-                
-                let imageId = try await syncManager.uploadOfferingImage(imageData)
-                uploadedImageIds.append(imageId)
-            } catch {
-                errorMessage = "Failed to upload image: \(error.localizedDescription)"
-                break
+            guard image.jpegData(compressionQuality: 0.8) != nil else {
+                continue
             }
+            
+            // Generate local image ID - sync removed
+            let imageId = "local_image_\(UUID().uuidString)"
+            uploadedImageIds.append(imageId)
         }
         
         selectedImages.removeAll()

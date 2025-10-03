@@ -10,15 +10,18 @@ enum AuthenticationState {
 class AuthenticationManager: ObservableObject {
     @Published var authenticationState: AuthenticationState = .loading
     @Published var allowSkip: Bool = true // Allow skipping authentication for development
+    @Published var shouldShowLogin = false
     
     let registrationManager = RegistrationFlowManager()
     
     private let sessionManager = SessionManager.shared
     private let coreDataManager = CoreDataManager.shared
     private let dataSyncManager = DataSyncManager.shared
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
         checkAuthenticationStatus()
+        setupSessionExpiryMonitoring()
     }
     
     private func checkAuthenticationStatus() {
@@ -91,4 +94,37 @@ class AuthenticationManager: ObservableObject {
             authenticationState = .registration
         }
     }
+    
+    private func setupSessionExpiryMonitoring() {
+        // Monitor for session expiry notifications
+        NotificationCenter.default.publisher(for: .sessionExpired)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleSessionExpiry()
+            }
+            .store(in: &cancellables)
+    }
+    
+    func handleSessionExpiry() {
+        // Clear session data
+        sessionManager.clearAllUserData()
+        
+        // Reset authentication state to force login
+        withAnimation(.easeInOut(duration: 0.5)) {
+            authenticationState = .registration
+            shouldShowLogin = true
+        }
+        
+        print("Session expired. Redirecting to login screen.")
+    }
+    
+    // Call this method when API returns 401/session expired
+    static func notifySessionExpired() {
+        NotificationCenter.default.post(name: .sessionExpired, object: nil)
+    }
+}
+
+// Notification extension
+extension Notification.Name {
+    static let sessionExpired = Notification.Name("SessionExpired")
 }

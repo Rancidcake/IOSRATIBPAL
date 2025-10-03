@@ -1,5 +1,21 @@
 import Foundation
 import SwiftUI
+import Combine
+
+// MARK: - Supporting Types for Organization
+enum OfferingListItem: Identifiable {
+    case header(String)
+    case offering(OfferingModel)
+    
+    var id: String {
+        switch self {
+        case .header(let title):
+            return "header_\(title)"
+        case .offering(let offering):
+            return "offering_\(offering.id)"
+        }
+    }
+}
 
 @MainActor
 class OfferingViewModel: ObservableObject {
@@ -13,7 +29,7 @@ class OfferingViewModel: ObservableObject {
     @Published var searchText = ""
     
     private let dataManager = OfferingDataManager.shared
-    private let syncManager = OfferingSyncManager.shared
+    // Sync manager removed - focusing on local storage only
     private var userId: String {
         return SessionManager.shared.getUserId() ?? ""
     }
@@ -28,18 +44,16 @@ class OfferingViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        // Load from local database first
+        // Load from local database only
         loadOfferingsFromDatabase()
-        
-        // Then sync with server
-        Task {
-            await syncWithServer()
-        }
+        loadCategoriesFromDatabase()
+        isLoading = false
     }
     
     func refreshOfferings() async {
         isRefreshing = true
-        await syncWithServer()
+        // Refresh from local storage only
+        refreshLocalData()
         isRefreshing = false
     }
     
@@ -76,18 +90,18 @@ class OfferingViewModel: ObservableObject {
     }
     
     private func updateSupplierDefinedCategories() {
-        let categories = Set(offerings.compactMap { $0.supplierDefinedCategory })
-        supplierDefinedCategories = Array(categories).sorted()
+        // Get distinct categories using the enhanced data manager method
+        supplierDefinedCategories = dataManager.getDistinctCategories(
+            userId: userId, 
+            distinctGci: false, 
+            distinctSDC: true
+        )
     }
     
-    private func syncWithServer() async {
-        do {
-            try await syncManager.performFullSync(userId: userId)
-            loadOfferingsFromDatabase()
-            loadCategoriesFromDatabase()
-        } catch {
-            errorMessage = error.localizedDescription
-        }
+    // Server sync removed - focusing on local storage only
+    private func refreshLocalData() {
+        loadOfferingsFromDatabase()
+        loadCategoriesFromDatabase()
         isLoading = false
     }
     
@@ -102,11 +116,6 @@ class OfferingViewModel: ObservableObject {
             let offeringModel = dataManager.convertToModel(gsu)
             offerings.append(offeringModel)
             updateSupplierDefinedCategories()
-            
-            // Sync with server in background
-            Task {
-                await syncWithServer()
-            }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -127,11 +136,6 @@ class OfferingViewModel: ObservableObject {
                 offerings[index] = dataManager.convertToModel(existingGSU)
             }
             updateSupplierDefinedCategories()
-            
-            // Sync with server in background
-            Task {
-                await syncWithServer()
-            }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -149,11 +153,6 @@ class OfferingViewModel: ObservableObject {
             // Remove from local array
             offerings.removeAll { $0.gid == offering.gid }
             updateSupplierDefinedCategories()
-            
-            // Sync with server in background
-            Task {
-                await syncWithServer()
-            }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -165,6 +164,18 @@ class OfferingViewModel: ObservableObject {
         searchText = text
         loadOfferingsFromDatabase()
     }
+    
+    // Enhanced search with server fallback (following Android pattern)
+    func performAdvancedSearch(_ text: String, categoryId: String? = nil) async {
+        searchText = text
+        
+        // Search locally only
+        loadOfferingsFromDatabase()
+        
+        print("[OfferingViewModel] Server search disabled - using local data only")
+    }
+    
+    // Database sync methods removed - focusing on local storage only
     
     func applyFilter(_ newFilter: OfferingFilter) {
         filter = newFilter
@@ -179,8 +190,10 @@ class OfferingViewModel: ObservableObject {
     
     // MARK: - Image Upload
     
+    // Image upload removed - focusing on local storage only
     func uploadImage(_ imageData: Data) async throws -> String {
-        return try await syncManager.uploadOfferingImage(imageData)
+        // Return a local placeholder image ID
+        return "local_image_\(UUID().uuidString)"
     }
     
     // MARK: - Entity Creation Helpers
@@ -247,13 +260,37 @@ class OfferingViewModel: ObservableObject {
     
     var offeringsByCategory: [String: [OfferingModel]] {
         return Dictionary(grouping: offerings) { offering in
-            offering.supplierDefinedCategory ?? "Uncategorized"
+            let categoryKey = (offering.category ?? "") + (offering.supplierDefinedCategory ?? "")
+            return categoryKey.isEmpty ? "Uncategorized" : (offering.supplierDefinedCategory ?? offering.category ?? "Uncategorized")
         }
+    }
+    
+    // MARK: - Category Organization (Following Android pattern)
+    func organizeOfferingsByCategory() -> [(header: String, offerings: [OfferingModel])] {
+        let grouped = offeringsByCategory
+        return grouped.map { (key, value) in
+            (header: key, offerings: value.sorted { $0.name < $1.name })
+        }.sorted { $0.header < $1.header }
+    }
+    
+    func getOfferingsWithHeaders() -> [OfferingListItem] {
+        var items: [OfferingListItem] = []
+        let organized = organizeOfferingsByCategory()
+        
+        for section in organized {
+            // Add category header
+            items.append(.header(section.header))
+            
+            // Add offerings in this category
+            for offering in section.offerings {
+                items.append(.offering(offering))
+            }
+        }
+        
+        return items
     }
     
     // MARK: - Background Operations
     
-    func performBackgroundSync() {
-        syncManager.performBackgroundSync(userId: userId)
-    }
+    // Background sync removed - focusing on local storage only
 }

@@ -19,6 +19,12 @@ class OfferingDataManager {
         try context.save()
     }
     
+    func saveContext() throws {
+        if context.hasChanges {
+            try context.save()
+        }
+    }
+    
     func createGSU(from response: GSUResponse, userId: String) -> CDGSU {
         let gsu = CDGSU(context: context)
         gsu.gid = response.gid
@@ -91,7 +97,9 @@ class OfferingDataManager {
     func fetchOfferingsByCategory(
         userId: String,
         categoryFilter: String? = nil,
-        searchText: String? = nil
+        searchText: String? = nil,
+        limit: Int? = nil,
+        offset: Int = 0
     ) -> [CDGSU] {
         let request: NSFetchRequest<CDGSU> = CDGSU.fetchRequest()
         var predicates: [NSPredicate] = [
@@ -312,36 +320,62 @@ class OfferingDataManager {
         }
     }
     
-    // MARK: - Synchronization Helpers
-    
-    func syncOfferings(from serverData: [GSUResponse], userId: String) throws {
-        let backgroundContext = backgroundContext()
+    // MARK: - Category Organization (Following Android DatabaseManager pattern)
+    func getDistinctCategories(userId: String, distinctGci: Bool = true, distinctSDC: Bool = false) -> [String] {
+        var retList: [String] = []
         
-        backgroundContext.perform {
-            for offeringResponse in serverData {
-                // Check if offering exists
-                let request: NSFetchRequest<CDGSU> = CDGSU.fetchRequest()
-                request.predicate = NSPredicate(format: "gid == %@", offeringResponse.gid)
-                
-                do {
-                    let existingOfferings = try backgroundContext.fetch(request)
-                    if let existingOffering = existingOfferings.first {
-                        // Update existing offering if server data is newer
-                        if offeringResponse.ua > existingOffering.ua || !existingOffering.e {
-                            self.updateGSU(existingOffering, from: offeringResponse, in: backgroundContext)
-                        }
-                    } else {
-                        // Create new offering
-                        _ = self.createNewGSU(from: offeringResponse, userId: userId, in: backgroundContext)
+        let request: NSFetchRequest<CDGSU> = CDGSU.fetchRequest()
+        request.predicate = NSPredicate(format: "sid == %@ AND d == FALSE", userId)
+        
+        do {
+            let offerings = try context.fetch(request)
+            
+            if distinctGci && distinctSDC {
+                let combined: [String] = offerings.compactMap { gsu in
+                    guard let gci = gsu.gci, let sdc = gsu.sdc else { return nil }
+                    return "\(gci)-\(sdc)"
+                }
+                retList = Array(Set(combined)).sorted()
+            } else if distinctGci {
+                let gcis = offerings.compactMap { $0.gci }
+                retList = Array(Set(gcis)).sorted()
+            } else if distinctSDC {
+                let sdcs = offerings.compactMap { $0.sdc }
+                retList = Array(Set(sdcs)).sorted()
+            }
+        } catch {
+            print("Error fetching distinct categories: \(error)")
+        }
+        
+        return retList
+    }
+    
+    // Enhanced offering search matching Android filterOfferingsBySearch
+    func filterOfferingsBySearch(_ offerings: [CDGSU], searchText: String) -> [CDGSU] {
+        let searchLower = searchText.lowercased()
+        return offerings.filter { gsu in
+            // Search in name
+            if let name = gsu.nam, name.lowercased().contains(searchLower) {
+                return true
+            }
+            // Search in barcode (main GSU or variants)
+            if let barcode = gsu.bcd, barcode.lowercased().contains(searchLower) {
+                return true
+            }
+            // Search in variant barcodes
+            if let variants = gsu.variants?.allObjects as? [CDVariant] {
+                for variant in variants {
+                    if let variantBarcode = variant.bcd, variantBarcode.lowercased().contains(searchLower) {
+                        return true
                     }
-                } catch {
-                    print("Error syncing offering \(offeringResponse.gid): \(error)")
                 }
             }
-            
-            CoreDataManager.shared.saveBackgroundContext(backgroundContext)
+            return false
         }
     }
+    
+    // MARK: - Synchronization Helpers Removed
+    // Focusing on local storage only - sync methods removed
     
     private func updateGSU(_ gsu: CDGSU, from response: GSUResponse, in context: NSManagedObjectContext) {
         gsu.gci = response.gci
@@ -409,7 +443,7 @@ class OfferingDataManager {
             name: gsu.nam ?? "",
             shortName: gsu.shn,
             description: gsu.dsc,
-            barcode: (gsu.variants?.first(where: { ($0 as? CDVariant)?.bcd != nil }) as? CDVariant)?.bcd ?? "",
+            barcode: gsu.bcd ?? (gsu.variants?.first(where: { ($0 as? CDVariant)?.bcd != nil }) as? CDVariant)?.bcd ?? "",
             imageIds: imageIds,
             unitLabel: gsu.ul,
             crateLabel: gsu.cl,
@@ -419,7 +453,7 @@ class OfferingDataManager {
             startDate: gsu.sdt,
             endDate: gsu.edt,
             category: gsu.gci,
-            supplierDefinedCategory: "",
+            supplierDefinedCategory: gsu.sdc ?? "",
             variants: variants,
             prices: prices,
             sources: sources
@@ -489,9 +523,5 @@ class OfferingDataManager {
         return try? JSONSerialization.jsonObject(with: data) as? [String]
     }
     
-    // MARK: - Helper Methods
-    
-    func saveContext() throws {
-        try CoreDataManager.shared.saveContext()
-    }
+
 }

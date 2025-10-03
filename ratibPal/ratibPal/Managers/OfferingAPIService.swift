@@ -100,12 +100,37 @@ class OfferingAPIService {
                     return
                 }
                 
+                // Check for HTTP status codes
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("📡 Response Status Code: \(httpResponse.statusCode)")
+                    
+                    // Handle session expiry (401 Unauthorized)
+                    if httpResponse.statusCode == 401 {
+                        print("❌ Session expired. Notifying AuthenticationManager.")
+                        AuthenticationManager.notifySessionExpired()
+                        completion(.failure(APIError.sessionExpired))
+                        return
+                    }
+                }
+                
+                // Debug: Print the actual response data
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Raw API Response: \(responseString)")
+                }
+                
                 do {
                     let result = try JSONDecoder().decode(T.self, from: data)
                     completion(.success(result))
                 } catch {
                     print("Decoding error: \(error)")
-                    completion(.failure(error))
+                    
+                    // Try to decode as error response
+                    if let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
+                        let errorMessage = errorResponse.general?.first?.message ?? "Unknown error"
+                        completion(.failure(APIError.serverError(errorMessage)))
+                    } else {
+                        completion(.failure(error))
+                    }
                 }
             }
         }.resume()
@@ -124,7 +149,7 @@ class OfferingAPIService {
         ) { (result: Result<OfferingAPIResponse, Error>) in
             switch result {
             case .success(let response):
-                completion(.success(response.success))
+                completion(.success(response.success ?? false))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -144,7 +169,7 @@ class OfferingAPIService {
         ) { (result: Result<OfferingAPIResponse, Error>) in
             switch result {
             case .success(let response):
-                completion(.success(response.success))
+                completion(.success(response.success ?? false))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -152,14 +177,28 @@ class OfferingAPIService {
     }
     
     // MARK: - Sync My Offerings
-    func syncMyOfferings(lastSyncTime: Int64? = nil, completion: @escaping (Result<[GSUResponse], Error>) -> Void) {
+    func syncMyOfferings(lastSyncTime: Int64? = nil, limit: Int = 20, offset: Int = 0, completion: @escaping (Result<[GSUResponse], Error>) -> Void) {
         let endpoint = "api2/v1/secure/offerings"
         let headers = getAuthHeaders()
         
-        var queryParams: [String: Any] = [:]
+        var queryParams: [String: Any] = [
+            "limit": limit,
+            "offset": offset
+        ]
+        
+        if let userId = SessionManager.shared.getUserId() {
+            queryParams["userId"] = userId
+        }
+        
         if let lastSync = lastSyncTime {
             queryParams["lsc"] = lastSync
         }
+        
+        // Debug logging for offering API call
+        print("🌐 Making request to: \(APIConfig.baseURL)\(endpoint)")
+        print("🔧 HTTP Method: GET")
+        print("📋 Query Parameters: \(queryParams)")
+        print("🔑 Headers: \(headers.keys.joined(separator: ", "))")
         
         performRequest(
             endpoint: endpoint,
@@ -169,8 +208,12 @@ class OfferingAPIService {
         ) { (result: Result<OfferingAPIResponse, Error>) in
             switch result {
             case .success(let response):
-                completion(.success(response.data ?? []))
+                // Handle both standard and direct array responses
+                let offerings = response.data ?? []
+                print("✅ Offering API success: received \(offerings.count) offerings")
+                completion(.success(offerings))
             case .failure(let error):
+                print("❌ Offering API failed with error: \(error)")
                 completion(.failure(error))
             }
         }
@@ -190,7 +233,7 @@ class OfferingAPIService {
         ) { (result: Result<OfferingAPIResponse, Error>) in
             switch result {
             case .success(let response):
-                completion(.success(response.success))
+                completion(.success(response.success ?? false))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -291,13 +334,28 @@ class OfferingAPIService {
     }
     
     // MARK: - Search My Offerings
-    func searchMyOfferings(searchText: String, completion: @escaping (Result<[GSUResponse], Error>) -> Void) {
+    func searchMyOfferings(searchText: String, categoryId: String? = nil, city: String? = nil, limit: Int = 10, offset: Int = 0, completion: @escaping (Result<[GSUResponse], Error>) -> Void) {
         let endpoint = "api2/v1/secure/offerings/search"
         let headers = getAuthHeaders()
         
-        let queryParams: [String: Any] = [
-            "search": searchText
+        var queryParams: [String: Any] = [
+            "search": searchText,
+            "limit": limit,
+            "offset": offset
         ]
+        
+        if let userId = SessionManager.shared.getUserId() {
+            queryParams["userId"] = userId
+            queryParams["userSupplierChainLevel"] = SessionManager.shared.getUserSupplierChainLevel() ?? 1
+        }
+        
+        if let catId = categoryId {
+            queryParams["categoryId"] = catId
+        }
+        
+        if let cityName = city {
+            queryParams["city"] = cityName
+        }
         
         performRequest(
             endpoint: endpoint,
@@ -339,8 +397,37 @@ class OfferingAPIService {
     }
     
     // MARK: - Fetch Offerings of Source
-    func fetchOfferingsOfSource(sourceId: String, searchText: String?, limit: Int?, offset: Int?, completion: @escaping (Result<[GSUResponse], Error>) -> Void) {
-        syncMyOfferings(lastSyncTime: nil, completion: completion)
+    func fetchOfferingsOfSource(sourceId: String, searchText: String? = nil, limit: Int = 20, offset: Int = 0, completion: @escaping (Result<[GSUResponse], Error>) -> Void) {
+        let endpoint = "api2/v1/secure/offerings/source"
+        let headers = getAuthHeaders()
+        
+        var queryParams: [String: Any] = [
+            "sourceId": sourceId,
+            "limit": limit,
+            "offset": offset
+        ]
+        
+        if let userId = SessionManager.shared.getUserId() {
+            queryParams["userId"] = userId
+        }
+        
+        if let search = searchText {
+            queryParams["search"] = search
+        }
+        
+        performRequest(
+            endpoint: endpoint,
+            method: .GET,
+            headers: headers,
+            queryParams: queryParams
+        ) { (result: Result<OfferingAPIResponse, Error>) in
+            switch result {
+            case .success(let response):
+                completion(.success(response.data ?? []))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     // MARK: - Upload Offering Image
@@ -420,4 +507,16 @@ enum APIError: Error {
     case invalidImageData
     case invalidResponse
     case networkError(String)
+    case sessionExpired
+    case serverError(String)
+}
+
+// MARK: - Error Response Models
+struct ErrorResponse: Codable {
+    let general: [ErrorDetail]?
+}
+
+struct ErrorDetail: Codable {
+    let messageCode: String?
+    let message: String?
 }
