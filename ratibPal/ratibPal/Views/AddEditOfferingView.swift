@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AddEditOfferingView: View {
     let categoryName: String
-    @StateObject private var offeringViewModel = OfferingViewModel()
+    @ObservedObject var offeringViewModel: OfferingViewModel
     @Environment(\.presentationMode) var presentationMode
     
     // Basic Information
@@ -1242,7 +1242,9 @@ struct AddEditOfferingView: View {
         // Save through ViewModel
         Task {
             await offeringViewModel.createOffering(offering)
-            presentationMode.wrappedValue.dismiss()
+            await MainActor.run {
+                presentationMode.wrappedValue.dismiss()
+            }
         }
     }
     
@@ -1434,5 +1436,5 @@ struct VariantRowView: View {
 
 
 #Preview {
-    AddEditOfferingView(categoryName: "Paper, Magazine")
+    AddEditOfferingView(categoryName: "Paper, Magazine", offeringViewModel: OfferingViewModel())
 }

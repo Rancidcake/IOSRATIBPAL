@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OfferingCategorySelectionView: View {
+    let offeringViewModel: OfferingViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var selectedTab = 0
     @State private var searchText = ""
@@ -138,7 +139,7 @@ struct OfferingCategorySelectionView: View {
                                 ForEach(section.items.indices, id: \.self) { itemIndex in
                                     let item = section.items[itemIndex]
                                     
-                                    NavigationLink(destination: AddEditOfferingView(categoryName: item.name)) {
+                                    NavigationLink(destination: AddEditOfferingView(categoryName: item.name, offeringViewModel: offeringViewModel)) {
                                         VStack(alignment: .leading, spacing: 4) {
                                             HStack {
                                                 Text(item.name)
@@ -200,5 +201,5 @@ struct CategoryItem {
 }
 
 #Preview {
-    OfferingCategorySelectionView()
+    OfferingCategorySelectionView(offeringViewModel: OfferingViewModel())
 }

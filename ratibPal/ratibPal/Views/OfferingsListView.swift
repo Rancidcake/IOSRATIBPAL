@@ -102,7 +102,7 @@ struct OfferingsListView: View {
             await viewModel.refreshOfferings()
         }
         .sheet(isPresented: $showingAddOffering) {
-            OfferingCategorySelectionView()
+            OfferingCategorySelectionView(offeringViewModel: viewModel)
         }
         .sheet(isPresented: $showingFilters) {
             OfferingFiltersView(
@@ -124,9 +124,7 @@ struct OfferingsListView: View {
             Text(viewModel.errorMessage ?? "")
         }
         .onAppear {
-            if viewModel.offerings.isEmpty {
-                viewModel.loadMyOfferings()
-            }
+            viewModel.loadMyOfferings()
         }
     }
     

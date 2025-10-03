@@ -58,6 +58,7 @@ class OfferingViewModel: ObservableObject {
     }
     
     private func loadOfferingsFromDatabase() {
+        print("🔍 Loading offerings from database for userId: \(userId)")
         let gsuEntities = dataManager.fetchOfferingsByCategory(
             userId: userId,
             categoryFilter: filter.categoryId,
@@ -66,6 +67,7 @@ class OfferingViewModel: ObservableObject {
         
         offerings = gsuEntities.map { dataManager.convertToModel($0) }
         updateSupplierDefinedCategories()
+        print("📱 Loaded \(offerings.count) offerings from database")
     }
     
     private func loadCachedData() {
@@ -112,12 +114,18 @@ class OfferingViewModel: ObservableObject {
             let gsu = createGSUEntity(from: offering)
             try dataManager.saveGSU(gsu)
             
-            // Add to local array
-            let offeringModel = dataManager.convertToModel(gsu)
-            offerings.append(offeringModel)
-            updateSupplierDefinedCategories()
+            // Add to local array on main thread
+            await MainActor.run {
+                let offeringModel = dataManager.convertToModel(gsu)
+                offerings.append(offeringModel)
+                updateSupplierDefinedCategories()
+                print("✅ Offering saved successfully: \(offering.name), Total offerings: \(offerings.count)")
+            }
         } catch {
-            errorMessage = error.localizedDescription
+            await MainActor.run {
+                errorMessage = error.localizedDescription
+                print("❌ Error saving offering: \(error.localizedDescription)")
+            }
         }
     }
     
